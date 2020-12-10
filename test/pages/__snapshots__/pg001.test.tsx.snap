@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home page matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    Hello  !
+  </div>
+  <br />
+  <input
+    type="button"
+    value="update"
+  />
+  <br />
+  <div>
+    系统已启动: 
+  </div>
+</DocumentFragment>
+`;

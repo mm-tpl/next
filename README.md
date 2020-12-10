@@ -1,4 +1,12 @@
+# Next template
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+You can create Next project:
+
+```bash
+yarn create next-app --example https://github.com/mm-tpl/next myapp
+```
 
 ## Getting Started
 
