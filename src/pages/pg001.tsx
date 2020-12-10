@@ -1,31 +1,37 @@
-import { NextPage, GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next';
+import { NextPage, GetStaticProps } from 'next';
+import useSWR, { mutate } from 'swr'
 
 interface IProps {
+	name: string;
 }
 
-const pg001: NextPage<IProps> = ({ }) => {
+const pg001: NextPage<IProps> = (context) => {
+	const { data } = useSWR<{ time: string; }>('api/s001');
+	// const { data } = useSWR<{ time: string; }>('api/s001', { refreshInterval: 3000 });
+	function update() {
+		mutate('api/s001');
+	}
 	return (
 		<>
-			Home
+			<div>
+				Hello {context.name} !
+			</div>
+			<br />
+			<input type="button" value="update" onClick={update} />
+			<br />
+			<div>
+				系统已启动: {data?.time}
+			</div>
 		</>
 	)
 }
 
-pg001.getInitialProps = async (context) => {
+export const getStaticProps: GetStaticProps<IProps> = async (context) => {
 	return {
-	};
-}
-
-export const getStaticProps: GetStaticProps = async (context) => {
-	// ...
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-	// ...
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	// ...
+		props: {
+			name: 'mmstudio'
+		}
+	}
 }
 
 export default pg001;
