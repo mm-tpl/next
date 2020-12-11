@@ -13,7 +13,7 @@ function App({ Component, pageProps }: AppInitialProps & AppContext) {
 			value={{
 				// refreshInterval: 10000,
 				async fetcher(url: string) {
-					const res = await fetch(`http://localhost:3000/${url}`);
+					const res = await fetch(url);
 					return res.json();
 				},
 			}}
