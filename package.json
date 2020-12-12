@@ -1,6 +1,7 @@
 {
 	"name": "p000000",
 	"version": "0.1.0",
+	"description": "$desc",
 	"private": true,
 	"scripts": {
 		"type-check": "tsc --pretty --noEmit",
