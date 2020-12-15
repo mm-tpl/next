@@ -1,0 +1,52 @@
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+// import router from 'next/router';
+// import { useEffect } from 'react';
+
+interface IProps { }
+
+const index: NextPage<IProps> = () => {
+	// useEffect(() => {
+	// 	router.replace('pg001');	// not a good idea redirecting at client.
+	// }, []);
+	return <>index page</>;
+};
+
+// getStaticProps doesn't wok while buiding it throws error and direct user to <https://github.com/vercel/next.js/blob/master/errors/gsp-redirect-during-prerender.md.>
+// Error occurred prerendering page "/". Read more: https://err.sh/next.js/prerender-error
+// Error: `redirect` can not be returned from getStaticProps during prerendering (/)
+// export const getStaticProps: GetStaticProps = (context) => {
+// 	return Promise.resolve({
+// 		redirect: {
+// 			destination: '/pg001',
+// 			permanent: true
+// 		},
+// 	});
+// };
+
+// export const getStaticPaths: GetStaticPaths = async () => {
+// 	// Call an external API endpoint to get posts
+
+// 	// Get the paths we want to pre-render based on posts
+
+// 	// We'll pre-render only these paths at build time.
+// 	// { fallback: false } means other routes should 404.
+// 	return Promise.resolve({ paths: [], fallback: true });
+// };
+
+// to make build success, we must not return redirect at this page at getStaticProps
+// index.getInitialProps = ({ req, res }) => {
+// 	const url = '/pg001';
+// 	res.statusCode = 302;
+// 	const body = `<p>HTTP Redirect: 302. Redirecting to <a href="${url}">${url}</a></p>`;
+// 	res.setHeader('Content-Length', Buffer.byteLength(body));
+// 	res.setHeader('Location', url);
+
+// 	if (req.method === 'HEAD') {
+// 		res.end();
+// 	} else {
+// 		res.end(body);
+// 	}
+// 	return {};
+// };
+
+export default index;
