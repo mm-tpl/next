@@ -2,9 +2,12 @@ import { AppContext, AppInitialProps, NextWebVitalsMetric } from 'next/app';
 import { CssBaseline, GeistProvider } from '@geist-ui/react';
 import '../../styles/globals.css';
 import { SWRConfig } from 'swr';
+import anylogger from 'anylogger';
+
+const logger = anylogger('app');
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
-	console.log(metric);
+	logger.info(metric);
 }
 
 function App({ Component, pageProps }: AppInitialProps & AppContext) {

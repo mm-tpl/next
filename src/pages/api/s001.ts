@@ -1,5 +1,9 @@
 import nextConnect from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
+import anylogger from 'anylogger';
+import '../../atoms/a001';
+
+const logger = anylogger('s001');
 
 const handler = nextConnect<
 	NextApiRequest,
@@ -30,6 +34,7 @@ function format(millisecond: number) {
 }
 
 handler.get((req, res) => {
+	logger.debug('request comming');
 	const now = new Date().getTime();
 	res.statusCode = 200;
 	res.json({ time: format(now - starttime) });
