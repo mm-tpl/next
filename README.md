@@ -8,6 +8,8 @@ You can create Next project:
 yarn create next-app --example https://github.com/mm-tpl/next myapp
 ```
 
+or use my extension with vscode [mmstudio](https://marketplace.visualstudio.com/items?itemName=mm.mmstudio) with command `mmstudio: Create Project` and follow the guid.
+
 ## Getting Started
 
 First, run the development server:
