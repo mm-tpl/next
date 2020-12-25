@@ -15,7 +15,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-push": "lint-staged && yarn type-check"
+			"pre-push": "yarn type-check"
 		}
 	},
 	"lint-staged": {
