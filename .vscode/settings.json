@@ -1,0 +1,34 @@
+{
+	"git.enableSmartCommit": true,
+	"editor.fontSize": 20,
+	"files.eol": "\n",
+	"explorer.confirmDelete": false,
+	"git.confirmSync": false,
+	"git.autofetch": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true,
+		"source.organizeImports": false
+	},
+	"editor.formatOnSave": true,
+	"files.autoSave": "onFocusChange",
+	"explorer.confirmDragAndDrop": false,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"editor.insertSpaces": false,
+	"editor.autoIndent": "none",
+	"editor.detectIndentation": false,
+	"editor.formatOnType": true,
+	"editor.wordWrap": "on",
+	"explorer.incrementalNaming": "smart",
+	"extensions.ignoreRecommendations": false,
+	"eslint.alwaysShowStatus": true,
+	"eslint.packageManager": "yarn",
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"typescript.preferences.importModuleSpecifier": "relative",
+	"editor.renderWhitespace": "all",
+	"editor.linkedEditing": true,
+	"vetur.format.defaultFormatter.ts": "none",
+	"breadcrumbs.enabled": true,
+	"files.associations": {
+		"*.json": "jsonc"
+	}
+}
