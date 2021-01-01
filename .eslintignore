@@ -3,3 +3,4 @@
 **/.next/*
 *.confg.js
 test/**/*
+*.lock
