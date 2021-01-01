@@ -1,7 +1,7 @@
 import nextConnect from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
 import anylogger from 'anylogger';
-import '../../atoms/a001';
+import '@mmstudio/an000042';
 
 const logger = anylogger('s001');
 
