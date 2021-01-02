@@ -1,6 +1,7 @@
 import { GetStaticProps, NextPage } from 'next';
 import useSWR, { mutate } from 'swr';
 import anylogger from 'anylogger';
+import Head from 'next/head';
 
 const logger = anylogger('pg001');
 
@@ -17,6 +18,9 @@ const pg001: NextPage<IProps> = (context) => {
 	}
 	return (
 		<>
+			<Head>
+				<title>mmstudio</title>
+			</Head>
 			<div>Hello {context.name} !</div>
 			<br />
 			<input type="button" value="update" onClick={update} />
