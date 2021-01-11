@@ -30,7 +30,7 @@
 	"dependencies": {
 		"@geist-ui/react": "^2.1.0-canary.2",
 		"@mmstudio/an000042": "^1.0.0",
-		"@mmstudio/schedule": "^2.0.0",
+		"@mmstudio/schedule": "^2.0.1",
 		"anylogger": "^1.0.9",
 		"anylogger-log4js": "^0.2.0",
 		"cross-env": "^7.0.3",
