@@ -1,0 +1,14 @@
+{
+	"jobs": [
+		{
+			"service": "schedule/a001",
+			"description": "example for schedule",
+			"rule": "* * * * * *",
+			"start": "",
+			"end": "",
+			"data": {
+				"test": "feidao"
+			}
+		}
+	]
+}

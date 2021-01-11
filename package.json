@@ -9,8 +9,12 @@
 		"lint": "eslint . --ext ts --ext tsx",
 		"test": "jest",
 		"test-all": "yarn lint && yarn type-check && yarn test",
+		"start-schedule": "cross-env NODE_ENV=production mm-schedule",
+		"schedule-watch-ts": "tsc -w -p ./schedule.json",
+		"schedule-ts": "tsc -p ./schedule.json",
+		"dev-schedule": "yarn schedule-watch-ts & cross-env NODE_ENV=development mm-schedule",
 		"dev": "next dev",
-		"build": "next build",
+		"build": "next build && yarn schedule-ts",
 		"start": "next start"
 	},
 	"husky": {
@@ -26,8 +30,10 @@
 	"dependencies": {
 		"@geist-ui/react": "^2.1.0-canary.2",
 		"@mmstudio/an000042": "^1.0.0",
+		"@mmstudio/schedule": "^2.0.0",
 		"anylogger": "^1.0.9",
 		"anylogger-log4js": "^0.2.0",
+		"cross-env": "^7.0.3",
 		"log4js": "^6.3.0",
 		"next": "10.0.3",
 		"next-connect": "^0.9.1",
