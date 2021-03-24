@@ -1,0 +1,12 @@
+{
+	"max_file_size": 53687091200,
+	"minio": {
+		"endPoint": "127.0.0.1",
+		"port": 9000,
+		"accessKey": "01factory",
+		"secretKey": "01factory",
+		"useSSL": false,
+		"region": "cn-north-1",
+		"partSize": 5242880
+	}
+}

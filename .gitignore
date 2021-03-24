@@ -36,3 +36,4 @@ logs/
 
 *.lock
 dist/
+data/
