@@ -9,7 +9,7 @@ interface IProps {
 	name: string
 }
 
-const pg001: NextPage<IProps> = (context) => {
+const page: NextPage<IProps> = (context) => {
 	console.debug(context);	// anylogger would not print anything if configured with log4js, use console would be fine.
 	const { data } = useSWR<{ time: string }>('api/s001');
 	// const { data } = useSWR<{ time: string; }>('api/s001', { refreshInterval: 3000 });
@@ -39,4 +39,4 @@ export const getStaticProps: GetStaticProps<IProps> = async (content) => {
 	});
 };
 
-export default pg001;
+export default page;
