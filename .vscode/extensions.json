@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"aaron-bond.better-comments",
+		"dbaeumer.vscode-eslint",
+		"eamodio.gitlens",
+		"mm.mmstudio",
+		"divlo.vscode-styled-jsx-languageserver",
+		"blanu.vscode-styled-jsx"
+	]
+}
