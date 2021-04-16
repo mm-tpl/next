@@ -9,6 +9,9 @@ interface IProps {
 	name: string
 }
 
+/**
+ * 01factory
+ */
 const page: NextPage<IProps> = (context) => {
 	console.debug(context);	// anylogger would not print anything if configured with log4js, use console would be fine.
 	const { data } = useSWR<{ time: string }>('api/s001');
@@ -19,7 +22,7 @@ const page: NextPage<IProps> = (context) => {
 	return (
 		<>
 			<Head>
-				<title>mmstudio</title>
+				<title>01factory</title>
 				<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"></link>
 				<link rel="icon" type="image/x-icon" sizes="32x32" href="/favicon-32x32.ico" ></link>
 				<link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon-16x16.ico"></link>
