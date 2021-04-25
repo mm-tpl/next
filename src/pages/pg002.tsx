@@ -1,7 +1,6 @@
 import { GetServerSideProps, NextPage, PageConfig } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Uppy from '@uppy/core';
 import XHRUpload from '@uppy/xhr-upload';
 // import Webcam from '@uppy/webcam';
@@ -101,9 +100,9 @@ function C001() {
  */
 function C002() {
 	return <>
-		<Link href='/tpl/dbtemplate.xlsx'>
-			<a><h1>下载模板</h1></a>
-		</Link>
+		<a href='/tpl/dbtemplate.xlsx'>
+			<h1>下载模板</h1>
+		</a>
 		<style jsx>{`
 a{
 color: red;
