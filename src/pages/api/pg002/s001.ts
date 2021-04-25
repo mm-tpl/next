@@ -5,7 +5,7 @@ import anylogger from 'anylogger';
 import '@mmstudio/an000042';
 import an49 from '@mmstudio/an000049';
 import an41 from '@mmstudio/an000041';
-import { Row, Workbook, Worksheet } from 'exceljs';
+import { Cell, CellErrorValue, CellFormulaValue, CellHyperlinkValue, CellRichTextValue, Row, ValueType, Workbook, Worksheet } from 'exceljs';
 
 const logger = anylogger('pages/api/pg002/s001');
 
@@ -82,12 +82,39 @@ export const config = {
 
 export default handler;
 
+function getcellvaluestr(cell: Cell) {
+	const value = cell.value;
+	switch (cell.type) {
+		case ValueType.Boolean:
+		case ValueType.Date:
+		case ValueType.Number:
+			return value?.toString().trim();
+		case ValueType.Error:
+			return (value as CellErrorValue).error as string;
+		case ValueType.Formula:
+			return ((value as CellFormulaValue).result as string).trim();
+		case ValueType.Hyperlink:
+			return (value as CellHyperlinkValue).text.trim();
+		case ValueType.Null:
+			return '';
+		case ValueType.RichText:
+			return (value as CellRichTextValue).richText.map((v) => {
+				return v.text;
+			}).join('').trim();
+		case ValueType.Merge:
+		case ValueType.SharedString:
+		case ValueType.String:
+		default:
+			return value?.toString().trim();
+	}
+}
+
 function getworksheetcelltext(ws: Worksheet, cellname: string) {
-	return ws.getCell(cellname).value?.toString().trim();
+	return getcellvaluestr(ws.getCell(cellname));
 }
 
 function getrowcelltext(row: Row, columnindex: number) {
-	return row.getCell(columnindex).value?.toString().trim();
+	return getcellvaluestr(row.getCell(columnindex));
 }
 
 type filedtype = 'smallint' | 'int' | 'interger' | 'long' | 'bigint' | 'float' | 'double' | 'date' | 'datetime' | 'timestamp' | 'text' | 'varchar';
