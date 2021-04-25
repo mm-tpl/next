@@ -94,12 +94,12 @@ function getcellvaluestr(cell: Cell) {
 		case ValueType.Formula:
 			return ((value as CellFormulaValue).result as string).trim();
 		case ValueType.Hyperlink:
-			return (value as CellHyperlinkValue).text.trim();
+			return (value as CellHyperlinkValue).text.toString().trim();
 		case ValueType.Null:
 			return '';
 		case ValueType.RichText:
 			return (value as CellRichTextValue).richText.map((v) => {
-				return v.text;
+				return v.text.toString();
 			}).join('').trim();
 		case ValueType.Merge:
 		case ValueType.SharedString:
