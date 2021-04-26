@@ -223,6 +223,7 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 	const fields = Array.from(mapfields.keys());
 	let rowindex = 2;	// skip 2 rows
 	const datas = [];
+	const now = new Date().getTime();
 	while (++rowindex <= ws.rowCount) {
 		const row = ws.getRow(rowindex);
 		if (row && row.hasValues) {
@@ -232,7 +233,12 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 				if (fieldinfo.type === 'date'
 					|| fieldinfo.type === 'datetime'
 					|| fieldinfo.type === 'timestamp') {
-					data[field] = new Date(value).getTime();
+					const tm = new Date(value).getTime();
+					if (isNaN(tm)) {
+						data[field] = now;
+					} else {
+						data[field] = tm;
+					}
 				} else {
 					data[field] = value;
 				}
