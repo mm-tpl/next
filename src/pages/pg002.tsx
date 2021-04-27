@@ -1,6 +1,5 @@
-import { GetServerSideProps, NextPage, PageConfig } from 'next';
+import { NextPage, PageConfig } from 'next';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
 import Uppy from '@uppy/core';
 import XHRUpload from '@uppy/xhr-upload';
 // import Webcam from '@uppy/webcam';
