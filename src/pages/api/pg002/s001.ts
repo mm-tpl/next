@@ -6,6 +6,7 @@ import '@mmstudio/an000042';
 import an49 from '@mmstudio/an000049';
 import an41 from '@mmstudio/an000041';
 import { Cell, CellErrorValue, CellFormulaValue, CellHyperlinkValue, CellRichTextValue, Row, ValueType, Workbook, Worksheet } from 'exceljs';
+import { Transaction } from 'knex';
 
 const logger = anylogger('pages/api/pg002/s001');
 
@@ -23,7 +24,7 @@ handler.put(async (req, res) => {
 	await wb.xlsx.readFile(file.path);
 	await fs.rm(file.path);
 	const [settable, setdata] = wb.worksheets.reduce(([table, data], ws) => {
-		const name = ws.name.trim();
+		const name = ws.name.trim().replace(/表$/, '');
 		logger.debug('worksheet name:', ws.name);
 		const arr = /(.*)-基础数据/.exec(name);
 		if (arr) {
@@ -47,26 +48,35 @@ handler.put(async (req, res) => {
 		return;
 	}
 
+	const db = an49();
 	const tables = Array.from(settable.keys());
-	const ps = tables.map(async (tablename) => {
-		logger.debug('正在导入表...', tablename);
-		const wstable = settable.get(tablename);
-		const wsdata = setdata.get(tablename);
-		const ret = await importtable(wstable);
-		if (ret) {
-			const { mapfields, tablename } = ret;
-			const flag = await importdata(wsdata, tablename, mapfields);
-			logger.debug('成功导入表', tablename);
-			return flag;
+	const haserror = await db.transaction<boolean>(async (trs) => {
+		const ps = tables.map(async (sheetname) => {
+			logger.debug('正在导入表...', sheetname);
+			const wstable = settable.get(sheetname);
+			const wsdata = setdata.get(sheetname);
+			const ret = await importtable(wstable, sheetname, trs);
+			if (ret) {
+				const { mapfields, tablename } = ret;
+				const flag = await importdata(wsdata, tablename, mapfields, sheetname, trs);
+				logger.debug('成功导入表', tablename, sheetname);
+				return flag;
+			}
+			logger.error('导入表失败', sheetname);
+			return false;
+		});
+		const results = await Promise.all(ps);
+		const haserror = results.some((flag) => {
+			return !flag;
+		});
+		if (haserror) {
+			await trs.rollback();
+		} else {
+			await trs.commit();
 		}
-		logger.error('导入表失败', tablename);
-		return false;
+		return haserror;
 	});
-	const results = await Promise.all(ps);
 
-	const haserror = results.some((flag) => {
-		return !flag;
-	});
 	if (haserror) {
 		res.status(500).json(false);
 	} else {
@@ -126,21 +136,20 @@ interface IFieldinfo {
 
 type Filedsinfo = Map<string, IFieldinfo>;
 
-async function importtable(ws: Worksheet) {
+async function importtable(ws: Worksheet, sheetname: string, db: Transaction<unknown, unknown>) {
 	const tablename = getworksheetcelltext(ws, 'D1').toLowerCase();
-	logger.debug('正在导入表结构...', tablename);
+	logger.debug('正在导入表结构...', tablename, sheetname);
 	const tablealias = getworksheetcelltext(ws, 'B1');
-	logger.debug('正在导入表结构alias...', tablealias);
+	logger.debug('正在导入表结构alias...', tablename, tablealias);
 	const rowfields = ws.getRow(4);
 	const rowfieldsalias = ws.getRow(3);
 	const rowfieldstype = ws.getRow(5);
 	let idx = 1;	// 跳过第一列
 	const mapfields = new Map<string, IFieldinfo>();
-	while (++idx <= ws.columnCount) {
+	while (++idx <= ws.actualColumnCount) {
 		const value = getrowcelltext(rowfields, idx);
 		if (value) {
 			const fieldname = value.toLowerCase();
-			logger.debug('字段名', fieldname);
 			const alias = getrowcelltext(rowfieldsalias, idx);
 			const type = getrowcelltext(rowfieldstype, idx) as filedtype;
 			mapfields.set(fieldname, {
@@ -151,10 +160,9 @@ async function importtable(ws: Worksheet) {
 	}
 	const fields = Array.from(mapfields.keys());
 	if (fields.length === 0) {
-		logger.error('无法获取到表字段,中止导入', tablename);
+		logger.error('无法获取到表字段,中止导入', tablename, sheetname);
 		return null;
 	}
-	const db = an49();
 	// db.schema.hasTable(tablename);
 	await db.schema.dropTableIfExists(tablename);
 	await db.schema.createTable(tablename, (builder) => {
@@ -192,23 +200,23 @@ async function importtable(ws: Worksheet) {
 			}
 		});
 	});
-	logger.debug('成功导入表结构', tablename);
+	logger.debug('成功导入表结构', tablename, sheetname);
 	return {
 		tablename,
 		mapfields
 	};
 }
 
-async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsinfo) {
-	logger.debug('正在导入表数据...', tablename);
+async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsinfo, sheetname: string, db: Transaction<unknown, unknown>) {
+	logger.debug('正在导入表数据...', tablename, sheetname);
 	if (!ws) {
-		logger.error('导入表数据失败:缺数据页', tablename);
+		logger.error('导入表数据失败:缺数据页', tablename, sheetname);
 		return false;
 	}
-	const rowheader = ws.getRow(1);
+	const rowheader = ws.getRow(2);
 	let columnindex = 0;
 	const mapfields = new Map<string, number>();
-	while (++columnindex <= ws.columnCount) {
+	while (++columnindex <= ws.actualColumnCount) {
 		const value = getrowcelltext(rowheader, columnindex);
 		if (value) {
 			const fieldname = value.toLowerCase();
@@ -218,13 +226,12 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 			}
 		}
 	}
-	const db = an49();
 	const tb = db(tablename);
 	const fields = Array.from(mapfields.keys());
 	let rowindex = 2;	// skip 2 rows
 	const datas = [];
 	const now = new Date().getTime();
-	while (++rowindex <= ws.rowCount) {
+	while (++rowindex <= ws.actualRowCount) {
 		const row = ws.getRow(rowindex);
 		if (row && row.hasValues) {
 			const data = fields.reduce((data, field) => {
@@ -244,15 +251,17 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 				}
 				return data;
 			}, {} as Record<string, string | number>);
-			datas.push(data);
+			if (Object.keys(data).length > 0) {
+				datas.push(data);
+			}
 		}
 	}
 	try {
 		await tb.insert(datas);
-		logger.debug('成功导入表数据', tablename);
+		logger.debug('成功导入表数据', tablename, sheetname);
 		return true;
 	} catch (error) {
-		logger.error('失败', tablename, datas);
+		logger.error('失败', tablename, sheetname, datas);
 		logger.error(error);
 		return false;
 	}

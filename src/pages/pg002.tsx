@@ -65,7 +65,8 @@ function C001() {
 			fieldName: 'file',
 			formData: true,
 			method: 'PUT',
-			endpoint: s001
+			endpoint: s001,
+			timeout: 6000000	// 60 * 1000 * 100
 		});
 		uppy.on('complete', (result) => {
 			// 以下代码可将上传的内容变成下载链接,放在页面上.
