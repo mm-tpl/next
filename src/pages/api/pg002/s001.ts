@@ -246,6 +246,13 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 					} else {
 						data[field] = tm;
 					}
+				} else if (fieldinfo.type === 'float'
+					|| fieldinfo.type === 'double') {
+					data[field] = Number(value);
+				} else if (fieldinfo.type === 'int'
+					|| fieldinfo.type === 'interger'
+					|| fieldinfo.type === 'smallint') {
+					data[field] = Number(value);
 				} else {
 					data[field] = value;
 				}
