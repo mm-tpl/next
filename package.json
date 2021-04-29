@@ -26,6 +26,7 @@
 		"@geist-ui/react": "^2.1.0-canary.2",
 		"@mmstudio/an000041": "^1.1.2",
 		"@mmstudio/an000042": "^1.0.0",
+		"@mmstudio/an000045": "^1.1.0",
 		"@mmstudio/an000046": "^1.0.0",
 		"@mmstudio/an000049": "^1.1.0",
 		"@mmstudio/schedule": "^2.0.2",
