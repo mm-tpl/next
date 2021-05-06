@@ -146,7 +146,8 @@ async function importtable(ws: Worksheet, sheetname: string, db: Transaction<unk
 	const rowfieldstype = ws.getRow(5);
 	let idx = 1;	// 跳过第一列
 	const mapfields = new Map<string, IFieldinfo>();
-	while (++idx <= ws.actualColumnCount) {
+	const column_size = ws.actualColumnCount + 10;
+	while (++idx <= column_size) {
 		const value = getrowcelltext(rowfields, idx);
 		if (value) {
 			const fieldname = value.toLowerCase();
@@ -216,7 +217,8 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 	const rowheader = ws.getRow(2);
 	let columnindex = 0;
 	const mapfields = new Map<string, number>();
-	while (++columnindex <= ws.actualColumnCount) {
+	const column_size = ws.actualColumnCount + 10;
+	while (++columnindex <= column_size) {
 		const value = getrowcelltext(rowheader, columnindex);
 		if (value) {
 			const fieldname = value.toLowerCase();
@@ -230,8 +232,9 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 	const fields = Array.from(mapfields.keys());
 	let rowindex = 2;	// skip 2 rows
 	const datas = [];
-	const now = new Date().getTime();
-	while (++rowindex <= ws.actualRowCount) {
+	const now = Date.now();
+	const rowsize = ws.actualRowCount + 10;
+	while (++rowindex <= rowsize) {
 		const row = ws.getRow(rowindex);
 		if (row && row.hasValues) {
 			const data = fields.reduce((data, field) => {
