@@ -2,11 +2,11 @@ module.exports = {
 	pageExtensions: ['page.tsx', 'api.ts'],
 	async redirects() {
 		return [
-			{
-				source: '/',
-				destination: '/pg001',
-				permanent: true,
-			},
+			// {
+			// 	source: '/',
+			// 	destination: '/pg001',
+			// 	permanent: true,
+			// },
 		]
 	},
 	// i18n: {
