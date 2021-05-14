@@ -13,9 +13,9 @@ import '@uppy/dashboard/dist/style.css';
 import '@uppy/progress-bar/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 import { useToasts } from '@geist-ui/react';
-import { Result as R1 } from './api/pg002/s001';
+import { Result as R1 } from '../api/dataimp/impexcel.api';
 
-const s001 = '/api/pg002/s001';
+const impexcel = '/api/dataimp/impexcel';
 interface IProps {
 }
 
@@ -64,7 +64,7 @@ function C001() {
 			fieldName: 'file',
 			formData: true,
 			method: 'PUT',
-			endpoint: s001,
+			endpoint: impexcel,
 			timeout: 6000000	// 60 * 1000 * 100
 		});
 		uppy.on('complete', (result) => {

@@ -8,7 +8,7 @@ import an41 from '@mmstudio/an000041';
 import { Cell, CellErrorValue, CellFormulaValue, CellHyperlinkValue, CellRichTextValue, Row, ValueType, Workbook, Worksheet } from 'exceljs';
 import { Transaction } from 'knex';
 
-const logger = anylogger('pages/api/pg002/s001');
+const logger = anylogger('pages/api/dataimp/impexcel.api');
 
 export type Result = boolean;
 
@@ -214,14 +214,23 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 		logger.error('导入表数据失败:缺数据页', tablename, sheetname);
 		return false;
 	}
-	const rowheader = ws.getRow(2);
+	const rowheader1 = ws.getRow(1);
+	const rowheader2 = ws.getRow(2);
 	let columnindex = 0;
 	const mapfields = new Map<string, number>();
 	const column_size = ws.actualColumnCount + 10;
 	while (++columnindex <= column_size) {
-		const value = getrowcelltext(rowheader, columnindex);
-		if (value) {
-			const fieldname = value.toLowerCase();
+		const value1 = getrowcelltext(rowheader1, columnindex);
+		if (value1) {
+			const fieldname = value1.toLowerCase();
+			const fieldinfo = fieldsinfo.get(fieldname);
+			if (fieldinfo) {
+				mapfields.set(fieldname, columnindex);
+			}
+		}
+		const value2 = getrowcelltext(rowheader2, columnindex);
+		if (value2) {
+			const fieldname = value2.toLowerCase();
 			const fieldinfo = fieldsinfo.get(fieldname);
 			if (fieldinfo) {
 				mapfields.set(fieldname, columnindex);

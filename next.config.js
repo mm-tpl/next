@@ -1,12 +1,5 @@
 module.exports = {
-	// async exportPathMap(
-	// 	defaultPathMap,
-	// 	{ dev, dir, outDir, distDir, buildId }
-	// ) {
-	// 	return {
-	// 		'/': { page: '/pg001' },
-	// 	};
-	// },
+	pageExtensions: ['page.tsx', 'api.ts'],
 	async redirects() {
 		return [
 			{
