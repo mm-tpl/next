@@ -18,69 +18,74 @@ export type Result = boolean;
 const handler = nextConnect<NextApiRequest, NextApiResponse<Result>>();
 
 handler.put(async (req, res) => {
-	// 解析文件
-	const [file] = await an41(req);
-	const wb = new Workbook();
-	await wb.xlsx.readFile(file.path);
-	await fs.rm(file.path);
-	const [settable, setdata] = wb.worksheets.reduce(([table, data], ws) => {
-		const name = ws.name.trim().replace(/表$/, '');
-		logger.debug('worksheet name:', ws.name);
-		const arr = /(.*)-基础数据/.exec(name);
-		if (arr) {
-			const tablename = arr[1];
-			data.set(tablename, ws);
-		} else {
-			table.set(name, ws);
-		}
-		return [table, data];
-	}, [new Map<string, Worksheet>(), new Map<string, Worksheet>()]);
-
-	if (settable.size === 0) {
-		res.status(500).statusMessage = decodeURIComponent('无法获取表结构');
-		res.end();
-		return;
-	}
-
-	if (setdata.size === 0) {
-		res.status(500).statusMessage = decodeURIComponent('无法获取表数据');
-		res.end();
-		return;
-	}
-
-	const db = an49();
-	const tables = Array.from(settable.keys());
-	const haserror = await db.transaction<boolean>(async (trs) => {
-		const ps = tables.map(async (sheetname) => {
-			logger.debug('正在导入表...', sheetname);
-			const wstable = settable.get(sheetname);
-			const wsdata = setdata.get(sheetname);
-			const ret = await importtable(wstable, sheetname, trs);
-			if (ret) {
-				const { mapfields, tablename } = ret;
-				const flag = await importdata(wsdata, tablename, mapfields, sheetname, trs);
-				logger.debug('成功导入表', tablename, sheetname);
-				return flag;
+	try {
+		// 解析文件
+		const [file] = await an41(req);
+		const wb = new Workbook();
+		await wb.xlsx.readFile(file.path);
+		await fs.rm(file.path);
+		const [settable, setdata] = wb.worksheets.reduce(([table, data], ws) => {
+			const name = ws.name.trim().replace(/表$/, '');
+			logger.debug('worksheet name:', ws.name);
+			const arr = /(.*)-基础数据/.exec(name);
+			if (arr) {
+				const tablename = arr[1];
+				data.set(tablename, ws);
+			} else {
+				table.set(name, ws);
 			}
-			logger.error('导入表失败', sheetname);
-			return false;
-		});
-		const results = await Promise.all(ps);
-		const haserror = results.some((flag) => {
-			return !flag;
-		});
-		if (haserror) {
-			await trs.rollback();
-		} else {
-			await trs.commit();
-		}
-		return haserror;
-	});
+			return [table, data];
+		}, [new Map<string, Worksheet>(), new Map<string, Worksheet>()]);
 
-	if (haserror) {
+		if (settable.size === 0) {
+			res.status(500).statusMessage = decodeURIComponent('无法获取表结构');
+			res.end();
+			return;
+		}
+
+		if (setdata.size === 0) {
+			res.status(500).statusMessage = decodeURIComponent('无法获取表数据');
+			res.end();
+			return;
+		}
+
+		const db = an49();
+		const tables = Array.from(settable.keys());
+		const haserror = await db.transaction<boolean>(async (trs) => {
+			const ps = tables.map(async (sheetname) => {
+				logger.debug('正在导入表...', sheetname);
+				const wstable = settable.get(sheetname);
+				const wsdata = setdata.get(sheetname);
+				const ret = await importtable(wstable, sheetname, trs);
+				if (ret) {
+					const { mapfields, tablename } = ret;
+					const flag = await importdata(wsdata, tablename, mapfields, sheetname, trs);
+					logger.debug('成功导入表', tablename, sheetname);
+					return flag;
+				}
+				logger.error('导入表失败', sheetname);
+				return false;
+			});
+			const results = await Promise.all(ps);
+			const haserror = results.some((flag) => {
+				return !flag;
+			});
+			if (haserror) {
+				await trs.rollback();
+			} else {
+				await trs.commit();
+			}
+			return haserror;
+		});
+
+		if (haserror) {
+			res.status(500).json(false);
+		} else {
+			res.status(200).json(true);
+		}
+	} catch (e) {
+		logger.error('Error while importing excel', e);
 		res.status(500).json(false);
-	} else {
-		res.status(200).json(true);
 	}
 });
 
