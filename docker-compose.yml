@@ -3,7 +3,6 @@ version: '3.7'
 services:
   postgres:
     image: postgres
-    container_name: db
     volumes:
       - ./data/postgre:/var/lib/postgresql/data
     restart: always
@@ -13,12 +12,15 @@ services:
       POSTGRES_PASSWORD: 01factory
     ports:
       - 5432:5432
+
   adminer:
-    container_name: adminer
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    links:
+      - postgres:db
+
   minio:
     image: minio/minio
     container_name: minio
