@@ -1,6 +1,18 @@
 version: '3.7'
 
 services:
+  01factory:
+    stdin_open: true
+    tty: true
+    image: taoqf/node
+    volumes:
+      - ./data/01factory:/01factory
+    ports: 
+      - 3000:3000
+    links: 
+      - postgres:db
+      - minio:minio
+
   postgres:
     image: postgres
     volumes:
