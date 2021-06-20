@@ -15,7 +15,7 @@
 		"node": true
 	},
 	"parserOptions": {
-		"ecmaVersion": 2018,
+		"ecmaVersion": 2020,
 		"sourceType": "module",
 		"ecmaFeatures": {
 			"impliedStrict": true
@@ -194,52 +194,17 @@
 		],
 		"@typescript-eslint/consistent-type-assertions": "off",
 		"@typescript-eslint/explicit-function-return-type": "off",
-		"@typescript-eslint/explicit-member-accessibility": "error",
 		"@typescript-eslint/explicit-module-boundary-types": "off",
 		"@typescript-eslint/interface-name-prefix": "off",
-		"@typescript-eslint/no-empty-function": [
-			"warn",
-			{
-				"allow": [
-					"constructors"
-				]
-			}
-		],
 		"@typescript-eslint/no-empty-interface": "off",
-		"@typescript-eslint/no-explicit-any": "error",
-		"@typescript-eslint/no-inferrable-types": [
-			"warn",
-			{
-				"ignoreParameters": true,
-				"ignoreProperties": true
-			}
-		],
-		"@typescript-eslint/no-misused-promises": [
-			"error",
-			{
-				"checksVoidReturn": false
-			}
-		],
 		"@typescript-eslint/no-namespace": "off",
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-parameter-properties": "off",
 		"no-unused-vars": "off",
-		"@typescript-eslint/no-unused-vars": "warn",
 		"@typescript-eslint/no-use-before-define": "off",
 		"@typescript-eslint/unbound-method": "off" // Too many bugs right now: https://github.com/typescript-eslint/typescript-eslint/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+unbound-method
 	},
 	"settings": {
-		"react": {
-			"createClass": "createReactClass", // Regex for Component Factory to use,
-			// default to "createReactClass"
-			"pragma": "React", // Pragma to use, default to "React"
-			"fragment": "Fragment", // Fragment to use (may be a property of <pragma>), default to "Fragment"
-			"version": "detect", // React version. "detect" automatically picks the version you have installed.
-			// You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
-			// default to latest and warns if missing
-			// It will default to "detect" in the future
-			"flowVersion": "0.53" // Flow version
-		},
 		// "propWrapperFunctions": [
 		// 	// The names of any function used to wrap propTypes, e.g. `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
 		// 	"forbidExtraProps",
