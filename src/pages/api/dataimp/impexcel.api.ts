@@ -6,7 +6,7 @@ import '@mmstudio/an000042';
 import an49 from '@mmstudio/an000049';
 import an41 from '@mmstudio/an000041';
 import { Cell, CellErrorValue, CellFormulaValue, CellHyperlinkValue, CellRichTextValue, Row, ValueType, Workbook, Worksheet } from 'exceljs';
-import { Transaction } from 'knex';
+import { Knex } from 'knex';
 
 const logger = anylogger('pages/api/dataimp/impexcel.api');
 
@@ -141,7 +141,7 @@ interface IFieldinfo {
 
 type Filedsinfo = Map<string, IFieldinfo>;
 
-async function importtable(ws: Worksheet, sheetname: string, db: Transaction<unknown, unknown>) {
+async function importtable(ws: Worksheet, sheetname: string, db: Knex.Transaction<unknown, unknown>) {
 	const tablename = getworksheetcelltext(ws, 'D1').toLowerCase();
 	logger.debug('正在导入表结构...', tablename, sheetname);
 	const tablealias = getworksheetcelltext(ws, 'B1');
@@ -213,7 +213,7 @@ async function importtable(ws: Worksheet, sheetname: string, db: Transaction<unk
 	};
 }
 
-async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsinfo, sheetname: string, db: Transaction<unknown, unknown>) {
+async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsinfo, sheetname: string, db: Knex.Transaction<unknown, unknown>) {
 	logger.debug('正在导入表数据...', tablename, sheetname);
 	if (!ws) {
 		logger.error('导入表数据失败:缺数据页', tablename, sheetname);
@@ -281,7 +281,9 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 		}
 	}
 	try {
-		await tb.insert(datas);
+		if (datas.length > 0) {
+			await tb.insert(datas);
+		}
 		logger.debug('成功导入表数据', tablename, sheetname);
 		return true;
 	} catch (error) {
