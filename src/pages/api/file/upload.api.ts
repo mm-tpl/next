@@ -28,10 +28,15 @@ export type Query = {
 const handler = nextConnect<NextApiRequest, NextApiResponse<Result>>();
 
 handler.put(async (req, res) => {
-	logger.debug('msg body:', req.body);
-	// 解析并保存文件
-	const [file] = await an45(req);
-	res.status(200).json({ ok: true, fileid: file.id });
+	try {
+		logger.debug('msg body:', req.body);
+		// 解析并保存文件
+		const [file] = await an45(req);
+		res.status(200).json({ ok: true, fileid: file.id });
+	} catch (error) {
+		logger.trace(error);
+		res.status(200).json({ ok: false, message: (error as Error).message });
+	}
 });
 
 export const config = {} as PageConfig;
