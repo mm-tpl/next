@@ -1,12 +1,12 @@
 import { promises as fs } from 'fs';
-import nextConnect from 'next-connect';
-import { NextApiRequest, NextApiResponse, PageConfig } from 'next';
+import { PageConfig } from 'next';
 import anylogger from 'anylogger';
 import '@mmstudio/an000042';
 import an49 from '@mmstudio/an000049';
 import an41 from '@mmstudio/an000041';
 import { Cell, CellErrorValue, CellFormulaValue, CellHyperlinkValue, CellRichTextValue, Row, ValueType, Workbook, Worksheet } from 'exceljs';
 import { Knex } from 'knex';
+import an48 from '@mmstudio/an000048';
 
 const logger = anylogger('pages/api/dataimp/impexcel.api');
 
@@ -15,7 +15,7 @@ export type Result = boolean;
 /**
  * 解析数据定义Excel并在数据库创建表,同时导入数据
  */
-const handler = nextConnect<NextApiRequest, NextApiResponse<Result>>();
+const handler = an48<Result>();
 
 handler.put(async (req, res) => {
 	try {

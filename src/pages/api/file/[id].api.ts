@@ -1,8 +1,8 @@
-import nextConnect from 'next-connect';
-import { NextApiRequest, NextApiResponse, PageConfig } from 'next';
+import { PageConfig } from 'next';
 import anylogger from 'anylogger';
 import '@mmstudio/an000042';
 import an46 from '@mmstudio/an000046';
+import an48 from '@mmstudio/an000048';
 
 const logger = anylogger('pages/api/getfile/[id]');
 
@@ -15,7 +15,7 @@ export type Query = {
 /**
  * 下载展示文件
  */
-const handler = nextConnect<NextApiRequest, NextApiResponse<Result>>();
+const handler = an48<Result>();
 
 handler.get(async (req, res) => {
 	try {

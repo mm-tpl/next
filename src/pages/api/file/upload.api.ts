@@ -1,8 +1,8 @@
-import nextConnect from 'next-connect';
-import { NextApiRequest, NextApiResponse, PageConfig } from 'next';
+import { PageConfig } from 'next';
 import anylogger from 'anylogger';
 import '@mmstudio/an000042';
 import an45 from '@mmstudio/an000045';
+import an48 from '@mmstudio/an000048';
 
 const logger = anylogger('pages/api/upload');
 
@@ -25,7 +25,7 @@ export type Query = {
 /**
  * 上传文件
  */
-const handler = nextConnect<NextApiRequest, NextApiResponse<Result>>();
+const handler = an48<Result>();
 
 handler.put(async (req, res) => {
 	try {
