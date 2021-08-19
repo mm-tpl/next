@@ -37,6 +37,16 @@ handler.put(async (req, res) => {
 		logger.trace(error);
 		res.status(200).json({ ok: false, message: (error as Error).message });
 	}
+}).post(async (req, res) => {
+	try {
+		logger.debug('msg body:', req.body);
+		// 解析并保存文件
+		const [file] = await an45(req);
+		res.status(200).json({ ok: true, fileid: file.id });
+	} catch (error) {
+		logger.trace(error);
+		res.status(200).json({ ok: false, message: (error as Error).message });
+	}
 });
 
 export const config = {} as PageConfig;
