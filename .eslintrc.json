@@ -27,6 +27,7 @@
 		"react"
 	],
 	"rules": {
+		"no-undef": "off",
 		"no-empty-pattern": "warn",
 		"react/react-in-jsx-scope": 0,
 		"react/display-name": 0,
