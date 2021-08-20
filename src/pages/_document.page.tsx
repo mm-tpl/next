@@ -1,4 +1,4 @@
-import NextDocument, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
+import NextDocument, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 
 interface Props {
 }
@@ -23,6 +23,6 @@ export default class Document extends NextDocument<Props> {
 					<NextScript />
 				</body>
 			</Html>
-		)
+		);
 	}
 }
