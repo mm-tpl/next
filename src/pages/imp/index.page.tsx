@@ -13,7 +13,8 @@ import '@uppy/dashboard/dist/style.css';
 import '@uppy/progress-bar/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 import { useToasts } from '@geist-ui/react';
-import { Result as R1 } from '../api/dataimp/impexcel.api';
+import cn from '@uppy/locales/lib/zh_CN';
+import { Result as R1 } from '../api/imp/data.api';
 import api from '../../atoms/api';
 
 interface IProps {
@@ -27,9 +28,12 @@ const page: NextPage<IProps> = () => {
 		<>
 			<Head>
 				<title>导入数据表</title>
+				<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"></link>
+				<link rel="icon" type="image/x-icon" sizes="32x32" href="/favicon-32x32.ico" ></link>
+				<link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon-16x16.ico"></link>
 			</Head>
-			<C002></C002>
-			<C001></C001>
+			<DownloadTemplate></DownloadTemplate>
+			<Uploader></Uploader>
 		</>
 	);
 };
@@ -43,7 +47,7 @@ export default page;
 /**
  * 上传组件
  */
-function C001() {
+function Uploader() {
 	const [, toast] = useToasts();
 	const uppy = useUppy(() => {
 		const uppy = Uppy({
@@ -55,13 +59,14 @@ function C001() {
 				maxNumberOfFiles: 3,
 				minNumberOfFiles: 1,
 				allowedFileTypes: ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/wps-office.xlsx']
-			}
+			},
+			locale: cn
 		});
 		uppy.use(XHRUpload, {
 			fieldName: 'file',
 			formData: true,
 			method: 'PUT',
-			endpoint: api.dataimp.impexcel,
+			endpoint: api['/api/imp/data'],
 			timeout: 6000000	// 60 * 1000 * 100
 		});
 		uppy.on('complete', (result) => {
@@ -95,7 +100,7 @@ function C001() {
 /**
  * 下载组件
  */
-function C002() {
+function DownloadTemplate() {
 	return <>
 		<a href='/tpl/dbtemplate.xlsx'>
 			<h1>下载模板</h1>

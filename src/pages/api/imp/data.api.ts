@@ -19,6 +19,11 @@ const handler = an48<Result>();
 
 handler.put(async (req, res) => {
 	try {
+		if (process.env.NODE_ENV === 'production') {
+			logger.error('Someone is trying to hack us.');
+			res.status(500).json(false);
+			return;
+		}
 		// 解析文件
 		const [file] = await an41(req);
 		const wb = new Workbook();

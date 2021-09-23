@@ -11,7 +11,7 @@
 	},
 	"dbconfig": {
 		"client": "pg",
-		"connection": "postgres://01factory:01factory@127.0.0.1:5432/01factory",
+		"connection": "postgres://01factory:01factory@db:5432/01factory",
 		"pool": {
 			"min": 0,
 			"max": 7

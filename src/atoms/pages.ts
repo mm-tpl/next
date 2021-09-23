@@ -3,5 +3,5 @@ export default {
 	'/_app': '/_app',
 	'/_document': '/_document',
 	'/': '/',
-	'/dataimp': '/dataimp'
+	'/imp': '/imp'
 };
