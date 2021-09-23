@@ -173,7 +173,8 @@
 			"warn",
 			{
 				"ignore": [
-					"vscode"
+					"vscode",
+					"@uppy/locales/lib/zh_CN"
 				]
 			}
 		],

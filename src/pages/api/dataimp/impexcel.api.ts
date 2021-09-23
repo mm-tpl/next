@@ -24,42 +24,22 @@ handler.put(async (req, res) => {
 		const wb = new Workbook();
 		await wb.xlsx.readFile(file.path);
 		await fs.rm(file.path);
-		const [settable, setdata] = wb.worksheets.reduce(([table, data], ws) => {
-			const name = ws.name.trim().replace(/表$/, '');
-			logger.debug('worksheet name:', ws.name);
-			const arr = /(.*)-基础数据/.exec(name);
-			if (arr) {
-				const tablename = arr[1];
-				data.set(tablename, ws);
-			} else {
-				table.set(name, ws);
-			}
-			return [table, data];
-		}, [new Map<string, Worksheet>(), new Map<string, Worksheet>()]);
 
-		if (settable.size === 0) {
-			res.status(500).statusMessage = decodeURIComponent('无法获取表结构');
-			res.end();
-			return;
-		}
-
-		if (setdata.size === 0) {
+		if (wb.worksheets.length === 0) {
 			res.status(500).statusMessage = decodeURIComponent('无法获取表数据');
 			res.end();
 			return;
 		}
 
 		const db = an49();
-		const tables = Array.from(settable.keys());
 		const haserror = await db.transaction<boolean>(async (trs) => {
-			const ps = tables.map(async (sheetname) => {
+			const ps = wb.worksheets.map(async (ws) => {
+				const sheetname = ws.name.trim();
 				logger.debug('正在导入表...', sheetname);
-				const wstable = settable.get(sheetname);
-				const wsdata = setdata.get(sheetname);
-				const ret = await importtable(wstable, sheetname, trs);
+				const ret = await importtable(ws, sheetname, trs);
 				if (ret) {
 					const { mapfields, tablename } = ret;
-					const flag = await importdata(wsdata, tablename, mapfields, sheetname, trs);
+					const flag = await importdata(ws, tablename, mapfields, sheetname, trs);
 					logger.debug('成功导入表', tablename, sheetname);
 					return flag;
 				}
@@ -142,13 +122,13 @@ interface IFieldinfo {
 type Filedsinfo = Map<string, IFieldinfo>;
 
 async function importtable(ws: Worksheet, sheetname: string, db: Knex.Transaction<unknown, unknown>) {
-	const tablename = getworksheetcelltext(ws, 'D1').toLowerCase();
+	const tablename = getworksheetcelltext(ws, 'B1').toLowerCase();
 	logger.debug('正在导入表结构...', tablename, sheetname);
-	const tablealias = getworksheetcelltext(ws, 'B1');
+	const tablealias = sheetname;
 	logger.debug('正在导入表结构alias...', tablename, tablealias);
-	const rowfields = ws.getRow(4);
-	const rowfieldsalias = ws.getRow(3);
-	const rowfieldstype = ws.getRow(5);
+	const rowfields = ws.getRow(3);
+	const rowfieldsalias = ws.getRow(2);
+	const rowfieldstype = ws.getRow(4);
 	let idx = 1;	// 跳过第一列
 	const mapfields = new Map<string, IFieldinfo>();
 	const column_size = ws.actualColumnCount + 10;
@@ -215,27 +195,14 @@ async function importtable(ws: Worksheet, sheetname: string, db: Knex.Transactio
 
 async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsinfo, sheetname: string, db: Knex.Transaction<unknown, unknown>) {
 	logger.debug('正在导入表数据...', tablename, sheetname);
-	if (!ws) {
-		logger.error('导入表数据失败:缺数据页', tablename, sheetname);
-		return false;
-	}
-	const rowheader1 = ws.getRow(1);
-	const rowheader2 = ws.getRow(2);
+	const rowheader = ws.getRow(3);
 	let columnindex = 0;
 	const mapfields = new Map<string, number>();
 	const column_size = ws.actualColumnCount + 10;
 	while (++columnindex <= column_size) {
-		const value1 = getrowcelltext(rowheader1, columnindex);
+		const value1 = getrowcelltext(rowheader, columnindex);
 		if (value1) {
 			const fieldname = value1.toLowerCase();
-			const fieldinfo = fieldsinfo.get(fieldname);
-			if (fieldinfo) {
-				mapfields.set(fieldname, columnindex);
-			}
-		}
-		const value2 = getrowcelltext(rowheader2, columnindex);
-		if (value2) {
-			const fieldname = value2.toLowerCase();
 			const fieldinfo = fieldsinfo.get(fieldname);
 			if (fieldinfo) {
 				mapfields.set(fieldname, columnindex);
@@ -244,7 +211,7 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 	}
 	const tb = db(tablename);
 	const fields = Array.from(mapfields.keys());
-	let rowindex = 2;	// skip 2 rows
+	let rowindex = 4;	// skip 4 rows
 	const datas = [];
 	const now = Date.now();
 	const rowsize = ws.actualRowCount + 10;
@@ -292,9 +259,3 @@ async function importdata(ws: Worksheet, tablename: string, fieldsinfo: Filedsin
 		return false;
 	}
 }
-
-// function isdata(ws: Worksheet) {
-// 	return ws.name.trim().endsWith('-基础数据');
-// 	// const a1 = ws.getCell('A1').value;
-// 	// return a1.toString().trim() === '表名注释';
-// }
