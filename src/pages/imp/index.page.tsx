@@ -28,9 +28,6 @@ const page: NextPage<IProps> = () => {
 		<>
 			<Head>
 				<title>导入数据表</title>
-				<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"></link>
-				<link rel="icon" type="image/x-icon" sizes="32x32" href="/favicon-32x32.ico" ></link>
-				<link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon-16x16.ico"></link>
 			</Head>
 			<DownloadTemplate></DownloadTemplate>
 			<Uploader></Uploader>
