@@ -23,6 +23,7 @@
 		]
 	},
 	"dependencies": {
+		"@arco-design/web-react": "^2.23.5",
 		"@geist-ui/react": "^2.1.5",
 		"@mmstudio/an000041": "^1.1.2",
 		"@mmstudio/an000042": "^1.0.0",
