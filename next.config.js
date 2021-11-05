@@ -1,4 +1,6 @@
-module.exports = {
+const withTM = require('next-transpile-modules')([/*'antd-mobile'*/]);
+
+module.exports = withTM({
 	pageExtensions: ['page.tsx', 'api.ts'],
 	async redirects() {
 		return [
@@ -13,4 +15,4 @@ module.exports = {
 	// 	locales: ['en-US', 'zh_CN', 'cn'],
 	// 	defaultLocale: 'cn',
 	// },
-};
+});
