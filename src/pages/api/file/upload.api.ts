@@ -49,6 +49,10 @@ handler.put(async (req, res) => {
 	}
 });
 
-export const config = {} as PageConfig;
+export const config = {
+	api: {
+		bodyParser: false
+	}
+} as PageConfig;
 
 export default handler;
