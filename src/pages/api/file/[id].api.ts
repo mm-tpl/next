@@ -13,7 +13,23 @@ export type Query = {
 }
 
 /**
- * 下载展示文件
+ * @openapi
+ * /api/file/{id}:
+ *   get:
+ *     summary: 文件下载
+ *     description: 下载文件或在页面中展示文件（一般为图片）
+ *     tags:
+ *       - file
+ *       - 01factory
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     response:
+ *       200:
+ *         description: file downloaded
  */
 const handler = an48<Result>();
 

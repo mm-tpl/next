@@ -17,6 +17,35 @@ export type Result = boolean;
  */
 const handler = an48<Result>();
 
+/**
+ * @openapi
+ * /api/imp/data:
+ *   put:
+ *     summary: Excel数据导入
+ *     description: 将Excel数据导入数据库，生成数据库表结构
+ *     tags:
+ *       - 01factory
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: true上传成功
+ *       500:
+ *         description: false上传失败
+ *     requestBody:
+ *       description: 要上传的文件
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               filename:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ */
 handler.put(async (req, res) => {
 	try {
 		if (process.env.NODE_ENV === 'production') {

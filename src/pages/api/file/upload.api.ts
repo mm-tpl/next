@@ -23,7 +23,31 @@ export type Query = {
 }
 
 /**
- * 上传文件
+ * @openapi
+ * /api/upload:
+ *   post:
+ *     summary: 文件上传
+ *     description: 将文件保存进文件服务器，同时返回文件id
+ *     tags:
+ *       - 01factory
+ *     requestBody:
+ *       description: 要上传的文件
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               filename:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     response:
+ *       200:
+ *         description:返回文件id
+ *       500:
+ *         description:失败
  */
 const handler = an48<Result>();
 
