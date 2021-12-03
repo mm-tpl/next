@@ -1,6 +1,14 @@
 const withTM = require('next-transpile-modules')([/*'antd-mobile'*/]);
 
 module.exports = withTM({
+	webpack5: true,
+	eslint: {
+		ignoreDuringBuilds: true
+	},
+	// webpack: (config) => {
+	// 	config.resolve.fallback = { fs: false };
+	// 	return config;
+	// },
 	pageExtensions: ['page.tsx', 'api.ts'],
 	async redirects() {
 		return [
