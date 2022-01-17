@@ -11,11 +11,10 @@
 		"test-all": "yarn lint && yarn type-check && yarn test",
 		"start-schedule": "cross-env NODE_ENV=production mm-schedule",
 		"schedule-watch-ts": "tsc -w -p ./schedule.json",
-		"schedule-ts": "tsc -p ./schedule.json",
 		"dev-schedule": "yarn schedule-watch-ts & cross-env NODE_ENV=development mm-schedule",
 		"dev": "next dev",
 		"build": "next build",
-		"build-schedule": "yarn schedule-ts",
+		"build-schedule": "tsc -p ./schedule.json",
 		"start": "next start"
 	},
 	"lint-staged": {
