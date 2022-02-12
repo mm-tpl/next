@@ -4,7 +4,7 @@
 	"description": "$desc",
 	"private": true,
 	"scripts": {
-		"type-check": "tsc --pretty --noEmit",
+		"type-check": "tsc -w --pretty --noEmit",
 		"format": "prettier --write .",
 		"lint": "eslint . --ext ts --ext tsx",
 		"test": "jest",
