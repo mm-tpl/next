@@ -1,46 +1,110 @@
-version: '3.7'
+version: '3.8'
 
 services:
-  01factory:
+  01factory-web:
     stdin_open: true
     tty: true
-    image: taoqf/node
+    image: taoqf/node:lts
+    working_dir: /01factory
     volumes:
       - ./data/01factory:/01factory
-    ports: 
-      - 3000:3000
-    links: 
+      - ~/.ssh:/root/.ssh
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 8080:8080
+      # - 3000:3000
+    links:
       - postgres:db
-      - minio:minio
+      - minio
+
+  01factory-doccode:
+    stdin_open: true
+    tty: true
+    image: taoqf/node:lts
+    command: /usr/local/bin/yarn start
+    working_dir: /01factory/gas-doccode/
+    volumes:
+      - ./data/01factory:/01factory
+      - ~/.ssh:/root/.ssh
+    environment:
+      TZ: Asia/Shanghai
+    links:
+      - postgres:db
+
+  adminer:
+    image: adminer
+    # ports:
+    #   - 8081:8080
+    links:
+      - postgres:db
+      - mysql
+
+  minio:
+    image: minio/minio
+    command: server --console-address ":9001" /data
+    volumes:
+      - ./data/minio:/data
+    # ports:
+    #   - 9000:9000
+    #   - 9001:9001
+    environment:
+      MINIO_ROOT_USER: 01factory
+      MINIO_ROOT_PASSWORD: 01factory
+      TZ: Asia/Shanghai
+
+  mc:
+    stdin_open: true
+    tty: true
+    image: minio/mc
+    entrypoint: /bin/sh
+    volumes:
+      - ./data/mc:/root/.mc
+      - ./data/files:/01factory
+    environment:
+      TZ: Asia/Shanghai
+    links:
+      - minio
 
   postgres:
-    image: postgres
+    image: postgis/postgis
     volumes:
-      - ./data/postgre:/var/lib/postgresql/data
-    restart: always
+      - ./data/postgis:/var/lib/postgresql
     environment:
       POSTGRES_DB: 01factory
       POSTGRES_USER: 01factory
       POSTGRES_PASSWORD: 01factory
+      TZ: Asia/Shanghai
     ports:
       - 5432:5432
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-    links:
-      - postgres:db
-
-  minio:
-    image: minio/minio
-    container_name: minio
-    command: server /data
+  nginx:
+    image: nginx
     volumes:
-      - ./data/minio:/data
-    ports:
-      - 9000:9000
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/localtime:/etc/timezone:ro
+      - ./gas.conf:/etc/nginx/conf.d/default.conf
     environment:
-      MINIO_ACCESS_KEY: 01factory
-      MINIO_SECRET_KEY: 01factory
+      TZ: Asia/Shanghai
+    ports:
+      - 3000:80
+    depends_on:
+      - 01factory-web
+      - adminer
+      - kkfileview
+    links:
+      - 01factory-web:webserver
+      - adminer
+      - kkfileview
+
+  kkfileview:
+    image: keking/kkfileview
+    volumes:
+      - ./data/01factory:/01factory
+    # ports:
+    #   - 8012:8012
+    environment:
+      - KK_CONTEXT_PATH=/preview
+      - KK_BASE_URL=/preview
+    links:
+      - 01factory-web:webserver
