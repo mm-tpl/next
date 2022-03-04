@@ -18,19 +18,19 @@ services:
       - postgres:db
       - minio
 
-  01factory-doccode:
-    stdin_open: true
-    tty: true
-    image: taoqf/node:lts
-    command: /usr/local/bin/yarn start
-    working_dir: /01factory/gas-doccode/
-    volumes:
-      - ./data/01factory:/01factory
-      - ~/.ssh:/root/.ssh
-    environment:
-      TZ: Asia/Shanghai
-    links:
-      - postgres:db
+  # 01factory-doccode:
+  #   stdin_open: true
+  #   tty: true
+  #   image: taoqf/node:lts
+  #   command: /usr/local/bin/yarn start
+  #   working_dir: /01factory/gas-doccode/
+  #   volumes:
+  #     - ./data/01factory:/01factory
+  #     - ~/.ssh:/root/.ssh
+  #   environment:
+  #     TZ: Asia/Shanghai
+  #   links:
+  #     - postgres:db
 
   adminer:
     image: adminer
@@ -38,7 +38,6 @@ services:
     #   - 8081:8080
     links:
       - postgres:db
-      - mysql
 
   minio:
     image: minio/minio
