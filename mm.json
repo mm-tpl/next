@@ -1,7 +1,7 @@
 {
 	"max_file_size": 53687091200,
 	"minio": {
-		"endPoint": "127.0.0.1",
+		"endPoint": "minio",
 		"port": 9000,
 		"accessKey": "01factory",
 		"secretKey": "01factory",
