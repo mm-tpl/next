@@ -1,40 +1,60 @@
-# Next template
+# 编码规则
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 命令规则
 
-You can create Next project:
+### 接口名称
 
-```bash
-yarn create next-app --example https://github.com/mm-tpl/next myapp
-```
+英文+数字组成。以字母`I`(`Interface`)为前缀，后跟英文+数字，单词首字母大写。如`ISearchData`
 
-or use my extension with vscode [mmstudio](https://marketplace.visualstudio.com/items?itemName=mm.mmstudio) with command `mmstudio: Create Project` and follow the guid.
+### 类型名称
 
-## Getting Started
+英文+数字组成。以字母Tp前缀，后跟英文+数字，单词首字母大写。如`TpSearchData`
 
-First, run the development server:
+### 目录/文件名称
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+小写英文+数字组成。多个单词使用`-`分隔。如`search-data`。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 组件名称
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+一个文件只导出一个默认组件。组件名称组成单词与文件名称保持一致。
 
-## Learn More
+英文+数字组成。大驼峰命名规则。如`SearchData`。
 
-To learn more about Next.js, take a look at the following resources:
+### 函数名称
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+一个文件只导出一个默认函数。组件名称组成单词与文件名称保持一致。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+英文+数字组成。小驼峰命名规则。如`searchData`。
 
-## Deploy on Vercel
+### 数据库/字段名称
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+小写英文+数字组成。多个单词使用`_`分隔。如`search_data`。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 页面/组件/服务创建方式
+
+   功能   | 快捷方式
+-----------|-----------
+触发代码建议 | (`ctrl+I`)
+代码注释    | (`ctrl+/`)
+创建页面    | (`alt+p`)
+创建组件    | (`alt+c`)
+创建服务    | (`alt+s`)
+`useState()`|`us`
+`useState<>()`|`ust`
+`useEffect`|`ue`
+`cb`|`()=>{}`
+移动整行|`alt+up`/`alt+down`
+
+## 组件
+
+	1. 根据数据条件控制组件显示与否，使用 `{cond && <Component></Component>}`方式
+	1. 根据用户操作控制组件显示与否，使用 `<Component visible={visible}></Component>`方式，如：新增/编辑/详情等弹出框组件.
+
+## 常用英文简拼
+
+简拼|全拼
+---|---
+`I`|interface
+`Tb`|table
+`str`|string
+`no`|number
