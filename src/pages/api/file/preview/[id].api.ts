@@ -32,7 +32,8 @@ handler.get(async (req, res) => {
 		logger.debug('msg body:', req.body);
 		const { id } = req.query as Message;
 		const uri = `${req.headers.scheme}://${req.headers.host}${api['/api/file/id']}/${id}`;
-		res.redirect(`/preview/onlinePreview?url=${encodeURIComponent(base64encode(uri))}&watermarkTxt=${encodeURIComponent('01微工厂')}'`);
+		logger.info('preview', uri);
+		res.redirect(`/preview/onlinePreview?url=${encodeURIComponent(base64encode(uri))}&watermarkTxt=${encodeURIComponent('01微工厂')}`);
 	} catch (error) {
 		logger.error(error);
 		logger.trace(error);

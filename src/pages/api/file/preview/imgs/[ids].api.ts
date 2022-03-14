@@ -36,7 +36,8 @@ handler.get(async (req, res) => {
 		const uris = ids.split(separator).map((id) => {
 			return `${req.headers.scheme}://${req.headers.host}${api['/api/file/id']}/${id}`;
 		});
-		res.redirect(`/preview/picturesPreview?urls=${encodeURIComponent(base64encode(uris.join(separator)))}&watermarkTxt=${encodeURIComponent('01微工厂')}'`);
+		logger.info('preview', uris);
+		res.redirect(`/preview/picturesPreview?urls=${encodeURIComponent(base64encode(uris.join(separator)))}&watermarkTxt=${encodeURIComponent('01微工厂')}`);
 	} catch (error) {
 		logger.error(error);
 		logger.trace(error);
