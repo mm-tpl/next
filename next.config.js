@@ -1,7 +1,11 @@
+// @ts-check
+
 const withTM = require('next-transpile-modules')([/*'antd-mobile'*/]);
 
-module.exports = withTM({
-	webpack5: true,
+/**
+ * @type {import('next').NextConfig}
+ **/
+const nextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true
 	},
@@ -17,10 +21,12 @@ module.exports = withTM({
 			// 	destination: '/pg001',
 			// 	permanent: true,
 			// },
-		]
+		];
 	},
 	// i18n: {
 	// 	locales: ['en-US', 'zh_CN', 'cn'],
 	// 	defaultLocale: 'cn',
 	// },
-});
+};
+
+module.exports = withTM(nextConfig);
