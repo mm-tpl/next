@@ -1,6 +1,5 @@
 {
 	"git.enableSmartCommit": true,
-	"editor.fontSize": 20,
 	"files.eol": "\n",
 	"explorer.confirmDelete": false,
 	"git.confirmSync": false,
