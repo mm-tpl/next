@@ -1,0 +1,11 @@
+FROM taoqf/node:lts
+
+COPY ./ /root/01factory
+
+EXPOSE 3000
+
+WORKDIR /root/01factory
+
+# ENTRYPOINT ["yarn dev"]
+
+# CMD ["cd /01factory" ]

@@ -1,0 +1,5 @@
+FROM minio/minio
+
+EXPOSE 9000
+
+CMD [ "server", "--console-address", ":9001", "/data" ]
