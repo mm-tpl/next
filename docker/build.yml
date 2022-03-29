@@ -101,7 +101,6 @@ services:
 
   postgres:
     image: 192.168.1.115:6060/01factory/postgres:latest
-    # image: postgis/postgis
     volumes:
       - ./data/postgis:/var/lib/postgresql
     environment:
