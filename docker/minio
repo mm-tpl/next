@@ -1,4 +1,5 @@
-FROM minio/minio
+# FROM minio/minio
+FROM 192.168.1.115:6060/01factory/minio:latest
 
 ENV TZ=Asia/Shanghai
 ENV MINIO_ROOT_USER=01factory

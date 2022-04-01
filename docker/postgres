@@ -1,5 +1,7 @@
-FROM postgres
+# FROM postgres
 # FROM postgis/postgis
+FROM 192.168.1.115:6060/01factory/postgres:latest
+# FROM 192.168.1.115:6060/01factory/postgis:latest
 
 ENV TZ=Asia/Shanghai
 ENV POSTGRES_DB=01factory
