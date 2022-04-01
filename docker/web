@@ -2,6 +2,8 @@ FROM taoqf/node:lts
 
 COPY ./ /root/01factory
 
+ENV TZ=Asia/Shanghai
+
 EXPOSE 3000
 
 WORKDIR /root/01factory

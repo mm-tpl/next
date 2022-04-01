@@ -3,128 +3,50 @@ version: "3.8"
 services:
   nginx:
     image: 192.168.1.115:6060/01factory/nginx:latest
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/localtime:/etc/timezone:ro
-    environment:
-      TZ: Asia/Shanghai
     ports:
       - 3000:80
-    depends_on:
-      - 01factory-web
-      - adminer
-      - kkfileview
-    links:
-      - 01factory-web:webserver
-      - adminer
-      - kkfileview
     build:
       context: ..
       dockerfile: ./docker/nginx
 
   01factory-web:
-    stdin_open: true
-    tty: true
     image: 192.168.1.115:6060/01factory/web:latest
-    working_dir: /01factory
-    volumes:
-      - ./data/01factory:/01factory
-      - ~/.ssh:/root/.ssh
-    environment:
-      TZ: Asia/Shanghai
-      # ports:
-      #   - 8080:8080
-      # - 3000:3000
-    links:
-      - postgres:db
-      - minio
     build:
       context: ..
       dockerfile: ./docker/web
-    # 01factory-doccode:
-    #   stdin_open: true
-    #   tty: true
-    #   image: 192.168.1.115:6060/01factory/doccode:latest
-    #   command: /usr/local/bin/yarn start
-    #   working_dir: /01factory/gas-doccode/
-    #   volumes:
-    #     - ./data/01factory:/01factory
-    #     - ~/.ssh:/root/.ssh
-    #   environment:
-    #     TZ: Asia/Shanghai
-    #   links:
-    #     - postgres:db
-    # build:
-    #   context: ..
-    #   dockerfile: ./docker/doccode
+
+  01factory-doccode:
+    image: 192.168.1.115:6060/01factory/doccode:latest
+    build:
+      context: ..
+      dockerfile: ./docker/doccode
 
   adminer:
     image: 192.168.1.115:6060/01factory/adminer:latest
-    # ports:
-    #   - 8081:8080
-    links:
-      - postgres:db
     build:
       context: ..
       dockerfile: ./docker/adminer
 
   minio:
     image: 192.168.1.115:6060/01factory/minio:latest
-    volumes:
-      - ./data/minio:/data
-    # ports:
-    #   - 9000:9000
-    #   - 9001:9001
-    environment:
-      MINIO_ROOT_USER: 01factory
-      MINIO_ROOT_PASSWORD: 01factory
-      TZ: Asia/Shanghai
     build:
       context: ..
       dockerfile: ./docker/minio
 
   mc:
-    stdin_open: true
-    tty: true
     image: 192.168.1.115:6060/01factory/mc:latest
-    entrypoint: /bin/sh
-    volumes:
-      - ./data/mc:/root/.mc
-      - ./data/files:/01factory
-    environment:
-      TZ: Asia/Shanghai
-    links:
-      - minio
     build:
       context: ..
       dockerfile: ./docker/mc
 
   postgres:
     image: 192.168.1.115:6060/01factory/postgres:latest
-    volumes:
-      - ./data/postgis:/var/lib/postgresql
-    environment:
-      POSTGRES_DB: 01factory
-      POSTGRES_USER: 01factory
-      POSTGRES_PASSWORD: 01factory
-      TZ: Asia/Shanghai
-    # ports:
-    #   - 5432:5432
     build:
       context: ..
       dockerfile: ./docker/postgres
 
   kkfileview:
     image: 192.168.1.115:6060/01factory/kkfileview:latest
-    volumes:
-      - ./data/01factory:/01factory
-    # ports:
-    #   - 8012:8012
-    environment:
-      - KK_CONTEXT_PATH=/preview
-      - KK_BASE_URL=/preview
-    links:
-      - 01factory-web:webserver
     build:
       context: ..
       dockerfile: ./docker/kkfileview

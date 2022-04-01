@@ -1,3 +1,9 @@
 FROM postgres
+# FROM postgis/postgis
+
+ENV TZ=Asia/Shanghai
+ENV POSTGRES_DB=01factory
+ENV POSTGRES_USER=01factory
+ENV POSTGRES_PASSWORD=01factory
 
 EXPOSE 5432

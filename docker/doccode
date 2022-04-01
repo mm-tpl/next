@@ -1,3 +1,9 @@
 FROM taoqf/doccode:latest
 
+ENV TZ=Asia/Shanghai
+
+WORKDIR /01factory/gas-doccode/
+
 EXPOSE 3000
+
+CMD [ "/usr/local/bin/yarn", "start" ]

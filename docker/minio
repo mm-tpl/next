@@ -1,5 +1,9 @@
 FROM minio/minio
 
-EXPOSE 9000
+ENV TZ=Asia/Shanghai
+ENV MINIO_ROOT_USER=01factory
+ENV MINIO_ROOT_PASSWORD=01factory
+
+EXPOSE 9000 9001
 
 CMD [ "server", "--console-address", ":9001", "/data" ]

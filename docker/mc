@@ -1,1 +1,5 @@
 FROM minio/mc
+
+ENV TZ=Asia/Shanghai
+
+ENTRYPOINT [ "/bin/sh" ]
