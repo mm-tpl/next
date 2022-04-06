@@ -10,5 +10,3 @@ EXPOSE 3000
 WORKDIR /root/01factory
 
 # ENTRYPOINT ["yarn dev"]
-
-# CMD ["cd /01factory" ]
