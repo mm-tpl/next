@@ -1,5 +1,5 @@
 # FROM minio/mc
-FROM 192.168.1.115:6060/01factory/mc:latest
+FROM 114.116.19.243:6060/01factory/mc:latest
 
 ENV TZ=Asia/Shanghai
 

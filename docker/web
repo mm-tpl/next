@@ -1,5 +1,5 @@
 # FROM taoqf/node:lts
-FROM 192.168.1.115:6060/01factory/web:latest
+FROM 114.116.19.243:6060/01factory/web:latest
 
 COPY ./ /root/01factory
 

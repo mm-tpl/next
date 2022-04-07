@@ -1,5 +1,5 @@
 # FROM nginx
-FROM 192.168.1.115:6060/01factory/nginx:latest
+FROM 114.116.19.243:6060/01factory/nginx:latest
 
 COPY ./docker/01factory.conf /etc/nginx/conf.d/default.conf
 

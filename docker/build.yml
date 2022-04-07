@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   nginx:
-    image: 192.168.1.115:6060/01factory/nginx:latest
+    image: 114.116.19.243:6060/01factory/nginx:latest
     ports:
       - 3000:80
     build:
@@ -10,43 +10,43 @@ services:
       dockerfile: ./docker/nginx
 
   01factory-web:
-    image: 192.168.1.115:6060/01factory/web:latest
+    image: 114.116.19.243:6060/01factory/web:latest
     build:
       context: ..
       dockerfile: ./docker/web
 
   01factory-doccode:
-    image: 192.168.1.115:6060/01factory/doccode:latest
+    image: 114.116.19.243:6060/01factory/doccode:latest
     build:
       context: ..
       dockerfile: ./docker/doccode
 
   adminer:
-    image: 192.168.1.115:6060/01factory/adminer:latest
+    image: 114.116.19.243:6060/01factory/adminer:latest
     build:
       context: ..
       dockerfile: ./docker/adminer
 
   minio:
-    image: 192.168.1.115:6060/01factory/minio:latest
+    image: 114.116.19.243:6060/01factory/minio:latest
     build:
       context: ..
       dockerfile: ./docker/minio
 
   mc:
-    image: 192.168.1.115:6060/01factory/mc:latest
+    image: 114.116.19.243:6060/01factory/mc:latest
     build:
       context: ..
       dockerfile: ./docker/mc
 
   postgres:
-    image: 192.168.1.115:6060/01factory/postgres:latest
+    image: 114.116.19.243:6060/01factory/postgres:latest
     build:
       context: ..
       dockerfile: ./docker/postgres
 
   kkfileview:
-    image: 192.168.1.115:6060/01factory/kkfileview:latest
+    image: 114.116.19.243:6060/01factory/kkfileview:latest
     build:
       context: ..
       dockerfile: ./docker/kkfileview

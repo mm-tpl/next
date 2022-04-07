@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   nginx:
-    image: 192.168.1.115:6060/01factory/nginx:latest
+    image: 114.116.19.243:6060/01factory/nginx:latest
     ports:
       - 3000:80
     depends_on:
@@ -17,7 +17,7 @@ services:
   01factory-web:
     stdin_open: true
     tty: true
-    image: 192.168.1.115:6060/01factory/web:latest
+    image: 114.116.19.243:6060/01factory/web:latest
     volumes:
       - ./data/01factory:/01factory
       - ~/.ssh:/root/.ssh
@@ -26,26 +26,26 @@ services:
       - minio
 
   01factory-doccode:
-    image: 192.168.1.115:6060/01factory/doccode:latest
+    image: 114.116.19.243:6060/01factory/doccode:latest
     volumes:
       - ./data/01factory:/01factory
     links:
       - postgres:db
 
   adminer:
-    image: 192.168.1.115:6060/01factory/adminer:latest
+    image: 114.116.19.243:6060/01factory/adminer:latest
     links:
       - postgres:db
 
   minio:
-    image: 192.168.1.115:6060/01factory/minio:latest
+    image: 114.116.19.243:6060/01factory/minio:latest
     volumes:
       - ./data/minio:/data
 
   mc:
     stdin_open: true
     tty: true
-    image: 192.168.1.115:6060/01factory/mc:latest
+    image: 114.116.19.243:6060/01factory/mc:latest
     volumes:
       - ./data/mc:/root/.mc
       - ./data/files:/01factory
@@ -53,12 +53,12 @@ services:
       - minio
 
   postgres:
-    image: 192.168.1.115:6060/01factory/postgres:latest
+    image: 114.116.19.243:6060/01factory/postgres:latest
     volumes:
       - ./data/postgres:/var/lib/postgresql
 
   kkfileview:
-    image: 192.168.1.115:6060/01factory/kkfileview:latest
+    image: 114.116.19.243:6060/01factory/kkfileview:latest
     volumes:
       - ./data/01factory:/01factory
     links:
