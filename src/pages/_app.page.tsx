@@ -1,5 +1,6 @@
 import { AppContext, AppInitialProps, NextWebVitalsMetric } from 'next/app';
 import { CssBaseline, GeistProvider } from '@geist-ui/react';
+import '@arco-design/web-react/dist/css/arco.css';
 import '../../styles/globals.css';
 import { SWRConfig } from 'swr';
 import anylogger from 'anylogger';
