@@ -1,5 +1,6 @@
 import { NextPage, PageConfig } from 'next';
 import Head from 'next/head';
+import { Message } from '@arco-design/web-react';
 import Uppy from '@uppy/core';
 import XHRUpload from '@uppy/xhr-upload';
 // import Webcam from '@uppy/webcam';
@@ -12,7 +13,6 @@ import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 import '@uppy/progress-bar/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
-import { useToasts } from '@geist-ui/react';
 import cn from '@uppy/locales/lib/zh_CN';
 import { Result as R1 } from '../api/imp/data.api';
 import api from '../../atoms/api';
@@ -45,7 +45,6 @@ export default page;
  * 上传组件
  */
 function Uploader() {
-	const [, toast] = useToasts();
 	const uppy = useUppy(() => {
 		const uppy = Uppy({
 			allowMultipleUploads: true,
@@ -72,21 +71,12 @@ function Uploader() {
 			if (success) {
 				const flag = success.response.body as R1;
 				if (flag) {
-					toast({
-						text: '上传成功',
-						type: 'success'
-					});
+					Message.success('上传成功');
 				} else {
-					toast({
-						text: '上传失败,请查看服务日志文件,位于 ./logs/mm.log',
-						type: 'error'
-					});
+					Message.error('上传失败,请查看服务日志文件,位于 ./logs/mm.log');
 				}
 			} else {
-				toast({
-					text: '上传失败,请查看服务日志文件,位于 ./logs/mm.log',
-					type: 'error'
-				});
+				Message.error('上传失败,请查看服务日志文件,位于 ./logs/mm.log');
 			}
 		});
 		return uppy;

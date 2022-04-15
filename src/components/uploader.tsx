@@ -3,11 +3,11 @@ import Uppy from '@uppy/core';
 import XHRUpload from '@uppy/xhr-upload';
 import cn from '@uppy/locales/lib/zh_CN';
 import { Dashboard, useUppy } from '@uppy/react';
+import { Message } from '@arco-design/web-react';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 import '@uppy/progress-bar/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
-import { useToasts } from '@geist-ui/react';
 import { Result } from '../pages/api/file/upload.api';
 import api from '../atoms/api';
 
@@ -29,7 +29,6 @@ export default function Uploader({
 }) {
 	const endpoint = api['/api/file/upload'];
 	const getfile = api['/api/file/id'];
-	const [, toast] = useToasts();
 	const uppy = useUppy(() => {
 		const uppy = Uppy({
 			allowMultipleUploads: multiple,
@@ -55,25 +54,16 @@ export default function Uploader({
 			if (success) {
 				const ret = success.response.body as Result;
 				if (ret.ok) {
-					toast({
-						text: '上传成功',
-						type: 'success'
-					});
+					Message.success('上传成功');
 					const file = `${getfile}/${ret.fileid}`;
 					onChange(file);
 				} else {
-					toast({
-						text: '上传失败',
-						type: 'error'
-					});
+					Message.error('上传失败');
 				}
 			}
 		});
 		uppy.on('error', () => {
-			toast({
-				text: '上传失败',
-				type: 'error'
-			});
+			Message.error('上传失败');
 		});
 		return uppy;
 	});
