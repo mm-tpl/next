@@ -1,6 +1,1 @@
-# FROM minio/mc
-FROM 114.116.19.243:6060/01factory/mc:latest
-
-ENV TZ=Asia/Shanghai
-
-ENTRYPOINT [ "/bin/sh" ]
+FROM dfactory01-docker.pkg.coding.net/01factory/core/mc:latest

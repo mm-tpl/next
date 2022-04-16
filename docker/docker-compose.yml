@@ -2,22 +2,22 @@ version: '3.8'
 
 services:
   nginx:
-    image: 114.116.19.243:6060/01factory/nginx:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/nginx:latest
     ports:
       - 3000:80
     depends_on:
       - 01factory-web
       - adminer
-      - kkfileview
+      - fileview
     links:
       - 01factory-web:webserver
       - adminer
-      - kkfileview
+      - fileview
 
   01factory-web:
     stdin_open: true
     tty: true
-    image: 114.116.19.243:6060/01factory/web:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
     volumes:
       - ./data/01factory:/01factory
       - ~/.ssh:/root/.ssh
@@ -26,26 +26,26 @@ services:
       - minio
 
   01factory-doccode:
-    image: 114.116.19.243:6060/01factory/doccode:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/doccode:latest
     volumes:
       - ./data/01factory:/01factory
     links:
       - postgres:db
 
   adminer:
-    image: 114.116.19.243:6060/01factory/adminer:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/adminer:latest
     links:
       - postgres:db
 
   minio:
-    image: 114.116.19.243:6060/01factory/minio:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/minio:latest
     volumes:
       - ./data/minio:/data
 
   mc:
     stdin_open: true
     tty: true
-    image: 114.116.19.243:6060/01factory/mc:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/mc:latest
     volumes:
       - ./data/mc:/root/.mc
       - ./data/files:/01factory
@@ -53,12 +53,12 @@ services:
       - minio
 
   postgres:
-    image: 114.116.19.243:6060/01factory/postgres:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/postgres:latest
     volumes:
       - ./data/postgres:/var/lib/postgresql
 
-  kkfileview:
-    image: 114.116.19.243:6060/01factory/kkfileview:latest
+  fileview:
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/fileview:latest
     volumes:
       - ./data/01factory:/01factory
     links:

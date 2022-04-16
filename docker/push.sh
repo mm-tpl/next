@@ -1,8 +1,8 @@
-docker push 114.116.19.243:6060/01factory/nginx:latest
-docker push 114.116.19.243:6060/01factory/web:latest
-docker push 114.116.19.243:6060/01factory/doccode:latest
-docker push 114.116.19.243:6060/01factory/adminer:latest
-docker push 114.116.19.243:6060/01factory/minio:latest
-docker push 114.116.19.243:6060/01factory/mc:latest
-docker push 114.116.19.243:6060/01factory/postgres:latest
-docker push 114.116.19.243:6060/01factory/kkfileview:latest
+docker push dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/nginx:latest
+docker push dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
+docker push dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/doccode:latest
+docker push dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/adminer:latest
+docker push dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/minio:latest
+docker push dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/mc:latest
+docker push dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/postgres:latest
+docker push dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/fileview:latest

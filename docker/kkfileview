@@ -1,8 +1,0 @@
-# FROM keking/kkfileview
-FROM 114.116.19.243:6060/01factory/kkfileview:latest
-
-ENV TZ=Asia/Shanghai
-ENV KK_CONTEXT_PATH=/preview
-ENV KK_BASE_URL=/preview
-
-EXPOSE 8012

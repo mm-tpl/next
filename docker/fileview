@@ -1,0 +1,2 @@
+FROM dfactory01-docker.pkg.coding.net/01factory/core/fileview:latest
+

@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   nginx:
-    image: 114.116.19.243:6060/01factory/nginx:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/nginx:latest
     ports:
       - 3000:80
     build:
@@ -10,43 +10,43 @@ services:
       dockerfile: ./docker/nginx
 
   01factory-web:
-    image: 114.116.19.243:6060/01factory/web:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
     build:
       context: ..
       dockerfile: ./docker/web
 
   01factory-doccode:
-    image: 114.116.19.243:6060/01factory/doccode:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/doccode:latest
     build:
       context: ..
       dockerfile: ./docker/doccode
 
   adminer:
-    image: 114.116.19.243:6060/01factory/adminer:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/adminer:latest
     build:
       context: ..
       dockerfile: ./docker/adminer
 
   minio:
-    image: 114.116.19.243:6060/01factory/minio:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/minio:latest
     build:
       context: ..
       dockerfile: ./docker/minio
 
   mc:
-    image: 114.116.19.243:6060/01factory/mc:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/mc:latest
     build:
       context: ..
       dockerfile: ./docker/mc
 
   postgres:
-    image: 114.116.19.243:6060/01factory/postgres:latest
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/postgres:latest
     build:
       context: ..
       dockerfile: ./docker/postgres
 
-  kkfileview:
-    image: 114.116.19.243:6060/01factory/kkfileview:latest
+  fileview:
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/fileview:latest
     build:
       context: ..
-      dockerfile: ./docker/kkfileview
+      dockerfile: ./docker/fileview
