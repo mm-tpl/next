@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   nginx:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/nginx:latest
+    image: dfactory01-docker.pkg.coding.net/01factory/core/nginx:latest
     ports:
       - 3000:80
     depends_on:
@@ -26,26 +26,26 @@ services:
       - minio
 
   01factory-doccode:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/doccode:latest
+    image: dfactory01-docker.pkg.coding.net/01factory/core/doccode:latest
     volumes:
       - ./data/01factory:/01factory
     links:
       - postgres:db
 
   adminer:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/adminer:latest
+    image: FROM dfactory01-docker.pkg.coding.net/01factory/core/adminer:latest
     links:
       - postgres:db
 
   minio:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/minio:latest
+    image: dfactory01-docker.pkg.coding.net/01factory/core/minio:latest
     volumes:
       - ./data/minio:/data
 
   mc:
     stdin_open: true
     tty: true
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/mc:latest
+    image: dfactory01-docker.pkg.coding.net/01factory/core/mc:latest
     volumes:
       - ./data/mc:/root/.mc
       - ./data/files:/01factory
@@ -53,12 +53,12 @@ services:
       - minio
 
   postgres:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/postgres:latest
+    image: dfactory01-docker.pkg.coding.net/01factory/core/postgres:latest
     volumes:
       - ./data/postgres:/var/lib/postgresql
 
   fileview:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/fileview:latest
+    image: dfactory01-docker.pkg.coding.net/01factory/core/fileview:latest
     volumes:
       - ./data/01factory:/01factory
     links:

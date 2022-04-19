@@ -1,52 +1,8 @@
 version: "3.8"
 
 services:
-  nginx:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/nginx:latest
-    ports:
-      - 3000:80
-    build:
-      context: ..
-      dockerfile: ./docker/nginx
-
   01factory-web:
     image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
     build:
       context: ..
       dockerfile: ./docker/web
-
-  01factory-doccode:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/doccode:latest
-    build:
-      context: ..
-      dockerfile: ./docker/doccode
-
-  adminer:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/adminer:latest
-    build:
-      context: ..
-      dockerfile: ./docker/adminer
-
-  minio:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/minio:latest
-    build:
-      context: ..
-      dockerfile: ./docker/minio
-
-  mc:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/mc:latest
-    build:
-      context: ..
-      dockerfile: ./docker/mc
-
-  postgres:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/postgres:latest
-    build:
-      context: ..
-      dockerfile: ./docker/postgres
-
-  fileview:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/fileview:latest
-    build:
-      context: ..
-      dockerfile: ./docker/fileview

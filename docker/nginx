@@ -1,3 +1,0 @@
-FROM dfactory01-docker.pkg.coding.net/01factory/core/nginx:latest
-
-# COPY ./docker/01factory.conf /etc/nginx/conf.d/default.conf
