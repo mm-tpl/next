@@ -3,6 +3,7 @@ version: '3.8'
 services:
   nginx:
     image: dfactory01-docker.pkg.coding.net/01factory/core/nginx:latest
+    # restart: unless-stopped
     ports:
       - 3000:80
     depends_on:
@@ -18,6 +19,7 @@ services:
     stdin_open: true
     tty: true
     image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
+    # restart: unless-stopped
     volumes:
       - ./data/01factory:/01factory
       - ~/.ssh:/root/.ssh
@@ -27,6 +29,7 @@ services:
 
   01factory-doccode:
     image: dfactory01-docker.pkg.coding.net/01factory/core/doccode:latest
+    # restart: unless-stopped
     volumes:
       - ./data/01factory:/01factory
     links:
@@ -34,11 +37,13 @@ services:
 
   adminer:
     image: FROM dfactory01-docker.pkg.coding.net/01factory/core/adminer:latest
+    # restart: unless-stopped
     links:
       - postgres:db
 
   minio:
     image: dfactory01-docker.pkg.coding.net/01factory/core/minio:latest
+    # restart: unless-stopped
     volumes:
       - ./data/minio:/data
 
@@ -46,6 +51,7 @@ services:
     stdin_open: true
     tty: true
     image: dfactory01-docker.pkg.coding.net/01factory/core/mc:latest
+    # restart: unless-stopped
     volumes:
       - ./data/mc:/root/.mc
       - ./data/files:/01factory
@@ -54,11 +60,13 @@ services:
 
   postgres:
     image: dfactory01-docker.pkg.coding.net/01factory/core/postgres:latest
+    # restart: unless-stopped
     volumes:
       - ./data/postgres:/var/lib/postgresql
 
   fileview:
     image: dfactory01-docker.pkg.coding.net/01factory/core/fileview:latest
+    # restart: unless-stopped
     volumes:
       - ./data/01factory:/01factory
     links:
