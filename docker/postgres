@@ -1,0 +1,3 @@
+FROM dfactory01-docker.pkg.coding.net/01factory/core/postgres:latest
+
+# ADD ./docker/01factory.sql /docker-entrypoint-initdb.d/01factory.sql

@@ -6,3 +6,9 @@ services:
     build:
       context: ..
       dockerfile: ./docker/web
+
+  # postgres:
+  #   image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/postgres:latest
+  #   build:
+  #     context: ..
+  #     dockerfile: ./docker/postgres
