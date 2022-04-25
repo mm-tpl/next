@@ -36,7 +36,7 @@ services:
       - postgres:db
 
   adminer:
-    image: FROM dfactory01-docker.pkg.coding.net/01factory/core/adminer:latest
+    image: dfactory01-docker.pkg.coding.net/01factory/core/adminer:latest
     # restart: unless-stopped
     links:
       - postgres:db
