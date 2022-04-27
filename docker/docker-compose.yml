@@ -5,7 +5,7 @@ services:
     image: dfactory01-docker.pkg.coding.net/01factory/core/nginx:latest
     # restart: unless-stopped
     ports:
-      - 3000:80
+      - 3456:80
     depends_on:
       - 01factory-web
       - adminer
