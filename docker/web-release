@@ -38,6 +38,7 @@ COPY --from=builder /app/package.json ./package.json
 # Overwite config file
 ADD ./docker/mm.json ./mm.json
 ADD ./log4js.json ./log4js.json
+ADD ./next.config.js ./next.config.js
 
 # USER nextjs
 
