@@ -1,9 +1,7 @@
 export default {
-	'/data/document.js': '/data/document.js',
-	'/data/styles.css': '/data/styles.css',
-	'/favicon-16x16.ico': '/favicon-16x16.ico',
-	'/favicon-32x32.ico': '/favicon-32x32.ico',
-	'/favicon.ico': '/favicon.ico',
-	'/tpl/dbtemplate.xlsx': '/tpl/dbtemplate.xlsx',
-	'/vercel.svg': '/vercel.svg'
+	'/favicon-16x16.ico': '/01factory/favicon-16x16.ico',
+	'/favicon-32x32.ico': '/01factory/favicon-32x32.ico',
+	'/favicon.ico': '/01factory/favicon.ico',
+	'/tpl/dbtemplate.xlsx': '/01factory/tpl/dbtemplate.xlsx',
+	'/vercel.svg': '/01factory/vercel.svg'
 };
