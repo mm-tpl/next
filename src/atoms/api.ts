@@ -1,4 +1,5 @@
 export default {
+	'/api/doccode': '/api/doccode',
 	'/api/file/delete/id': '/api/file/delete',
 	'/api/file/getposition': '/api/file/getposition',
 	'/api/file/id': '/api/file',
