@@ -6,7 +6,7 @@ const withTM = require('next-transpile-modules')([/*'antd-mobile'*/]);
  * @type {import('next').NextConfig}
  **/
 const nextConfig = {
-	basePath: '01factory',
+	basePath: '/01factory',
 	eslint: {
 		ignoreDuringBuilds: true
 	},
