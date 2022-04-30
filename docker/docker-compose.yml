@@ -15,7 +15,7 @@ services:
       - adminer
       - fileview
 
-  01factory-dev:
+  01factory-web:
     stdin_open: true
     tty: true
     image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:dev
