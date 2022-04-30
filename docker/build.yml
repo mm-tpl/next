@@ -1,6 +1,12 @@
 version: "3.8"
 
 services:
+  01factory-dev:
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:dev
+    build:
+      context: ..
+      dockerfile: ./docker/web
+
   01factory-web:
     image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
     build:
