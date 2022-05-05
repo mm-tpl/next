@@ -13,8 +13,8 @@ services:
       context: ..
       dockerfile: ./docker/web-release
 
-  postgres:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/postgres:latest
+  db:
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/db:latest
     build:
       context: ..
       dockerfile: ./docker/postgres

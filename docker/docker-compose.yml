@@ -23,7 +23,7 @@ services:
       - ./data/01factory:/01factory
       - ~/.ssh:/root/.ssh
     links:
-      - postgres:db
+      - db
       - minio
       - 01factory-doccode:docode
 
@@ -33,7 +33,7 @@ services:
   #   volumes:
   #     - ./data/01factory:/01factory
   #   links:
-  #     - postgres:db
+  #     - db
   #     - minio
   #     - 01factory-doccode:docode
 
@@ -43,13 +43,13 @@ services:
     volumes:
       - ./data/01factory:/01factory
     links:
-      - postgres:db
+      - db
 
   adminer:
     image: dfactory01-docker.pkg.coding.net/01factory/core/adminer:latest
     # restart: unless-stopped
     links:
-      - postgres:db
+      - db
 
   minio:
     image: dfactory01-docker.pkg.coding.net/01factory/core/minio:latest
@@ -68,7 +68,7 @@ services:
     links:
       - minio
 
-  postgres:
+  db:
     image: dfactory01-docker.pkg.coding.net/01factory/core/postgres:latest
     # restart: unless-stopped
     volumes:
