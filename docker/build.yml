@@ -11,10 +11,10 @@ services:
     image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
     build:
       context: ..
-      dockerfile: ./docker/web
+      dockerfile: ./docker/web-release
 
-  # postgres:
-  #   image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/postgres:latest
-  #   build:
-  #     context: ..
-  #     dockerfile: ./docker/postgres
+  postgres:
+    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/postgres:latest
+    build:
+      context: ..
+      dockerfile: ./docker/postgres
