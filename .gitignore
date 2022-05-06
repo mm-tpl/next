@@ -34,6 +34,5 @@ yarn-error.log*
 .vercel
 logs/
 
-*.lock
 dist/
 data/
