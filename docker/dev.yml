@@ -1,7 +1,7 @@
 ---
 - ansible.builtin.import_playbook: ../deploy/build.yml
   vars:
-    host: gas
+    host: 01factory
     buildname: dev
     img: dfactory01-docker.pkg.coding.net/xxx/xxx/web:dev
     container_path: /01factory
