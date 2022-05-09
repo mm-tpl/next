@@ -4,8 +4,8 @@
   hosts: "{{host}}"
   remote_user: root
   vars:
-    usr: ptv5d0mme2rh
-    psw: f5426a3d7319dae678ab3774c2adf75642563728
+    usr: xxx
+    psw: xxx
   tasks:
     - name: Login coding
       register: loginresult
