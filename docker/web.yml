@@ -1,9 +1,6 @@
 ---
 - ansible.builtin.import_playbook: ../deploy/publish.yml
   vars:
-    host: 01factory
-    buildname: web
+    buildname: 01factory-web
     img: dfactory01-docker.pkg.coding.net/xxx/xxx/web:latest
-    container_path: /01factory
     build_path: ./docker
-    conainter_name: 01factory-web

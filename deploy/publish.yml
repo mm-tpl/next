@@ -6,6 +6,8 @@
   vars:
     usr: xxx
     psw: xxx
+    host: xxx
+    container_path: xxx
   tasks:
     - name: Login coding
       register: loginresult
