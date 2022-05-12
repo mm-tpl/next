@@ -5,13 +5,13 @@ services:
     image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:dev
     build:
       context: ..
-      dockerfile: ./docker/web
+      dockerfile: ./docker/dev
 
   01factory-web:
     image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
     build:
       context: ..
-      dockerfile: ./docker/web-release
+      dockerfile: ./docker/web
 
   db:
     image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/db:latest
