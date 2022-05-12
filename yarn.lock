@@ -417,10 +417,10 @@
   dependencies:
     next-connect "^0.10.1"
 
-"@mmstudio/an000049@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.npmjs.org/@mmstudio/an000049/-/an000049-2.3.0.tgz#38f0ad06514edb4b76ff1ad8ba8d0273bad0652d"
-  integrity sha512-4J6hYTqvSOuiUTCLoJj050XUlwgKdCDq6uZIpsft6VTBgn2IYZG7/eC9IaWukaaR4HIZ2LyqerC+/aGZjYIgfQ==
+"@mmstudio/an000049@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npmjs.org/@mmstudio/an000049/-/an000049-2.3.1.tgz#d91adcdb8515aeb949f1c1bc7ee67af4b894c9aa"
+  integrity sha512-pGIdXoo92i4nophOkLTeWe0C92/hYK0kTxh6FxRAhhuin724jQJa4qR1dKyA3riVWc/Sr8HaQZSrr8SuWF5Kpw==
   dependencies:
     knex "^2.0.0"
     np "^7.5.0"
@@ -442,12 +442,12 @@
   resolved "https://registry.npmjs.org/@mmstudio/an000059/-/an000059-1.0.1.tgz#0640f96ca896fafcf977960eabbd17183f93b1d4"
   integrity sha512-BXCCPVLA/BuWlr5ftUh5ifUDXu72EnD4G+NWSxB7XAKdb0x1kIDYspEJ1ea2lBXAR8v7mNk9M3NOst8gqf2sUA==
 
-"@mmstudio/an000060@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/@mmstudio/an000060/-/an000060-1.0.1.tgz#16a82be224a0f6f80f6b1e599d48619f7cfa0283"
-  integrity sha512-j++OPFyORngtLKtvoGSJQLCZduLMJl5uAWX8DU7aVXhPpKOgxxf2akULtqII0r1XNmWiHOHdK3Vfe5fw/C++3g==
+"@mmstudio/an000060@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/@mmstudio/an000060/-/an000060-1.0.3.tgz#24cb649b930f64efb39052be4c841cb4e62eb5a5"
+  integrity sha512-zUnXYaJjWf4G5D1BrSmExUPAm0gtMz+BEbEwbpmyleCkBzOSuI8RzETsQ9lJrZR7SW2F2w/88pdLmwyNG8EJaw==
   dependencies:
-    "@mmstudio/an000049" "^2.3.0"
+    "@mmstudio/an000049" "^2.3.1"
     "@mmstudio/an000059" "^1.0.1"
 
 "@mmstudio/config@3.0.0":
