@@ -1,0 +1,20 @@
+{
+	"max_file_size": 53687091200,
+	"minio": {
+		"endPoint": "minio",
+		"port": 9000,
+		"accessKey": "01factory",
+		"secretKey": "01factory",
+		"useSSL": false,
+		"region": "cn-north-1",
+		"partSize": 5242880
+	},
+	"dbconfig": {
+		"client": "pg",
+		"connection": "postgres://01factory:01factory@db:5432/01factory",
+		"pool": {
+			"min": 0,
+			"max": 7
+		}
+	}
+}
