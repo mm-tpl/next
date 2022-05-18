@@ -9,8 +9,8 @@ import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 import '@uppy/progress-bar/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
-import { Result } from '../api/file/upload.api';
-import api from '../../atoms/api';
+import { Result } from '../pages/api/file/upload.api';
+import api from '../atoms/api';
 
 type fileType = 'image' | 'video' | 'image+video' | 'excel' | 'word' | 'ppt' | 'office' | 'zip' | 'pdf';
 

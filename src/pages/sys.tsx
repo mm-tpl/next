@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Ring from './components/ring';
+import Ring from '../components/ring';
 
 /**
  * 系统界面
