@@ -5,6 +5,7 @@
 		"eamodio.gitlens",
 		"mm.mmstudio",
 		"divlo.vscode-styled-jsx-languageserver",
-		"blanu.vscode-styled-jsx"
+		"blanu.vscode-styled-jsx",
+		"cipchk.cssrem"
 	]
 }
