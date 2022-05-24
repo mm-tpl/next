@@ -7,12 +7,8 @@ import an48 from '@mmstudio/an000048';
 const logger = anylogger('pages/api/upload');
 
 export type Result = {
-	ok: true;
 	fileid: string;
 	filename: string;
-} | {
-	ok: false;
-	message: string;
 };
 
 export type Message = {
@@ -58,13 +54,12 @@ handler.put(async (req, res) => {
 		// 解析并保存文件
 		const [file] = await an45(req);
 		res.status(200).json({
-			ok: true,
 			fileid: file.id,
 			filename: file.name
 		});
 	} catch (error) {
-		logger.trace(error);
-		res.status(200).json({ ok: false, message: (error as Error).message });
+		logger.error(error);
+		res.status(500).end((error as Error).message);
 	}
 }).post(async (req, res) => {
 	try {
@@ -72,13 +67,12 @@ handler.put(async (req, res) => {
 		// 解析并保存文件
 		const [file] = await an45(req);
 		res.status(200).json({
-			ok: true,
 			fileid: file.id,
 			filename: file.name
 		});
 	} catch (error) {
-		logger.trace(error);
-		res.status(200).json({ ok: false, message: (error as Error).message });
+		logger.error(error);
+		res.status(500).end((error as Error).message);
 	}
 });
 

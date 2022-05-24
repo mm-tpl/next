@@ -16,7 +16,12 @@ const page: NextPage<IProps> = () => {
 				<title>导入数据表</title>
 			</Head>
 			<DownloadTemplate></DownloadTemplate>
-			<Uploader></Uploader>
+			<Uploader
+				multiple={false}
+				onChange={() => {
+				}}
+				defaultFiles={[]}
+			/>
 		</>
 	);
 };

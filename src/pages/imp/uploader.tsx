@@ -1,60 +1,100 @@
-
-import { Message } from '@arco-design/web-react';
-import Uppy from '@uppy/core';
-import XHRUpload from '@uppy/xhr-upload';
-// import Webcam from '@uppy/webcam';
-// import ScreenCapture from '@uppy/screen-capture';
-// import ImageEditor from '@uppy/image-editor';
-// import OneDrive from '@uppy/onedrive';
-// import Instagram from '@uppy/instagram';
-import { Dashboard, useUppy } from '@uppy/react';
-import '@uppy/core/dist/style.css';
-import '@uppy/dashboard/dist/style.css';
-import '@uppy/progress-bar/dist/style.css';
-import '@uppy/status-bar/dist/style.css';
-import cn from '@uppy/locales/lib/zh_CN';
-import { Result as R1 } from '../api/imp/data.api';
+import { useState } from 'react';
+import { Message, Upload } from '@arco-design/web-react';
+import { UploadItem } from '@arco-design/web-react/es/Upload';
+import { Result } from '../api/file/upload.api';
+import deletefile from '../api/file/delete/deletefile';
 import api from '../../atoms/api';
 
+export type File = {
+	fileid: string;
+	filename: string;
+}
 /**
- * 上传组件
+ * 文件上传
  */
-export default function Uploader() {
-	const uppy = useUppy(() => {
-		const uppy = Uppy({
-			allowMultipleUploads: true,
-			autoProceed: true,
-			debug: true,
-			restrictions: {
-				maxFileSize: 1000000,
-				maxNumberOfFiles: 3,
-				minNumberOfFiles: 1,
-				allowedFileTypes: ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/wps-office.xlsx']
+export default function Uploader({
+	multiple = false,
+	defaultFiles = [],
+	onChange
+}: {
+	multiple: boolean;
+	defaultFiles: File[];
+	onChange(files: File[]): void;
+}) {
+	const endpoint = api['/api/imp/data'];
+	const getfile = api['/api/file/id'];
+	const [filelist, setfilelist] = useState(defaultFiles.map((file) => {
+		return {
+			uid: file.fileid,
+			name: file.filename,
+			response: {
+				fileid: file.fileid,
+				filename: file.filename
 			},
-			locale: cn
-		});
-		uppy.use(XHRUpload, {
-			fieldName: 'file',
-			formData: true,
-			method: 'PUT',
-			endpoint: api['/api/imp/data'],
-			timeout: 6000000	// 60 * 1000 * 100
-		});
-		uppy.on('complete', (result) => {
-			// 以下代码可将上传的内容变成下载链接,放在页面上.
-			const [success] = result.successful;
-			if (success) {
-				const flag = success.response.body as R1;
-				if (flag) {
-					Message.success('上传成功');
-				} else {
-					Message.error('上传失败,请查看服务日志文件,位于 ./logs/mm.log');
+			status: 'done',
+			url: `${getfile}/${file.fileid}`
+		} as UploadItem;
+	}));
+	return <>
+		<Upload
+			multiple={multiple}
+			fileList={filelist}
+			action={endpoint}
+			onChange={(files, file) => {
+				onChange(files.filter((file) => {
+					return file.status === 'done';
+				}).map((file) => {
+					const res = file.response as Result;
+					return {
+						fileid: res.fileid,
+						filename: res.filename
+					};
+				}));
+				setfilelist(files);
+			}}
+			beforeUpload={(file) => {
+				// 全部图片类型
+				// if (/image/.test(file.type)) {
+				// 	return true;
+				// }
+				// 只是jpg
+				// if (/image\/(jpeg|jpg)/.test(file.type)) {
+				// 	return true;
+				// }
+				// 视频文件
+				// if (/video/.test(file.type)) {
+				// 	return true;
+				// }
+				// 压缩文件
+				// if (/application\/(x-7z-compressed|x-gzip|zip|x-rar)/.test(file.type)) {
+				// 	return true;
+				// }
+				// Word
+				// if (/application\/(vnd\.openxmlformats-officedocument\.wordprocessingml\.document|wps-office\.docx)/.test(file.type)) {
+				// 	return true;
+				// }
+				// Excel
+				if (/application\/(vnd\.ms-excel|vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet|wps-office\.xlsx)/.test(file.type)) {
+					return true;
 				}
-			} else {
-				Message.error('上传失败,请查看服务日志文件,位于 ./logs/mm.log');
-			}
-		});
-		return uppy;
-	});
-	return <Dashboard uppy={uppy} />;
+				// Ppt
+				// if (/application\/(vnd\.ms-powerpoint|vnd\.openxmlformats-officedocument\.presentationml\.presentation|wps-office\.pptx)/.test(file.type)) {
+				// 	return true;
+				// }
+				// Pdf
+				// if (/application\/pdf/.test(file.type)) {
+				// 	return true;
+				// }
+				Message.error('不支持的文件类型');
+				return false;
+			}}
+			onRemove={async (file) => {
+				// todo 如果不希望直接在文件服务器删除文件，而是在业务逻辑上删除文件，去掉以下代码
+				const res = file.response as Result;
+				await deletefile({
+					id: res.fileid
+				});
+			}}
+		/>
+	</>;
 }

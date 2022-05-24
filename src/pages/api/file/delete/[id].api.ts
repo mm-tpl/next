@@ -35,9 +35,9 @@ handler.delete(async (req, res) => {
 		}
 		res.status(200).json({ ok: true });
 	} catch (error) {
+		const msg = (error as Error).message;
 		logger.error(error);
-		logger.trace(error);
-		res.status(200).json({ ok: false, message: (error as Error).message });
+		res.status(500).end(msg);
 	}
 });
 
