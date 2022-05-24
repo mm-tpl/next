@@ -113,6 +113,15 @@ function FileCard({
 	props: UploadListProps;
 }) {
 	const f = file.response as Result;
+	if (!f) {
+		return <>Loading</>;
+	}
+	if (file.status === 'error') {
+		return <div>Error:{file.response} </div>;
+	}
+	if (!f || file.status !== 'done') {
+		return <>Loading</>;
+	}
 	const preview = `${api['/api/file/preview/id']}/${f.fileid}`;
 	const download = `${api['/api/file/id']}/${f.fileid}`;
 	return <div className='item'>
