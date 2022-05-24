@@ -6,10 +6,12 @@ import an48 from '@mmstudio/an000048';
 
 const logger = anylogger('pages/api/upload');
 
-export type Result = {
+export type File = {
 	fileid: string;
 	filename: string;
 };
+
+export type Result = File;
 
 export type Message = {
 
