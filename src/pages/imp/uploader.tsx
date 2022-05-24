@@ -1,14 +1,10 @@
 import { useState } from 'react';
 import { Message, Upload } from '@arco-design/web-react';
 import { UploadItem } from '@arco-design/web-react/es/Upload';
-import { Result } from '../api/file/upload.api';
+import { File, Result } from '../api/file/upload.api';
 import deletefile from '../api/file/delete/deletefile';
 import api from '../../atoms/api';
 
-export type File = {
-	fileid: string;
-	filename: string;
-}
 /**
  * 文件上传
  */

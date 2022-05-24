@@ -1,16 +1,11 @@
 import { useState } from 'react';
-import { Message, Modal, Upload } from '@arco-design/web-react';
+import { Message, Upload } from '@arco-design/web-react';
 import { UploadItem, UploadListProps } from '@arco-design/web-react/es/Upload';
 import { IconDelete, IconDownload, IconEye } from '@arco-design/web-react/icon';
-import { Result } from '../pages/api/file/upload.api';
-import res from '../atoms/res';
+import { File, Result } from '../pages/api/file/upload.api';
 import api from '../atoms/api';
 import deletefile from '../pages/api/file/delete/deletefile';
 
-export type File = {
-	fileid: string;
-	filename: string;
-}
 /**
  * 文件上传
  */
