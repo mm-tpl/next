@@ -84,13 +84,13 @@ export default function Uploader({
 				Message.error('不支持的文件类型');
 				return false;
 			}}
-			onRemove={async (file) => {
-				// todo 如果不希望直接在文件服务器删除文件，而是在业务逻辑上删除文件，去掉以下代码
-				const res = file.response as Result;
-				await deletefile({
-					id: res.fileid
-				});
-			}}
+		// onRemove={async (file) => {
+		// 	// todo 如果不希望直接在文件服务器删除文件，而是在业务逻辑上删除文件，去掉以下代码
+		// 	const res = file.response as Result;
+		// 	await deletefile({
+		// 		id: res.fileid
+		// 	});
+		// }}
 		/>
 	</>;
 }
