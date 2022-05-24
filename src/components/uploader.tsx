@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Message, Upload } from '@arco-design/web-react';
-import { UploadItem } from '@arco-design/web-react/es/Upload';
+import { Message, Modal, Upload } from '@arco-design/web-react';
+import { UploadItem, UploadListProps } from '@arco-design/web-react/es/Upload';
+import { IconDelete, IconDownload, IconEye } from '@arco-design/web-react/icon';
 import { Result } from '../pages/api/file/upload.api';
 import res from '../atoms/res';
 import api from '../atoms/api';
@@ -41,6 +42,7 @@ export default function Uploader({
 			multiple={multiple}
 			fileList={filelist}
 			action={endpoint}
+			listType='text'
 			onChange={(files, file) => {
 				onChange(files.filter((file) => {
 					return file.status === 'done';
@@ -99,6 +101,66 @@ export default function Uploader({
 					id: res.fileid
 				});
 			}}
+			renderUploadList={(files, props) => {
+				return files.map((file) => {
+					return <FileCard key={file.uid} file={file} props={props} />;
+				});
+			}}
 		/>
 	</>;
+}
+
+function FileCard({
+	file,
+	props
+}: {
+	file: UploadItem;
+	props: UploadListProps;
+}) {
+	const f = file.response as Result;
+	const preview = `${api['/api/file/preview/id']}/${f.fileid}`;
+	const download = `${api['/api/file/id']}/${f.fileid}`;
+	return <div className='item'>
+		<a target={'_blank'} rel="noreferrer" href={preview}>
+			<div>
+				{file.name}
+			</div>
+		</a>
+		<div className='btns'>
+			<div className='btn'>
+				<a target={'_blank'} rel="noreferrer" href={preview}>
+					<IconEye style={{ fontSize: 12 }} />
+				</a>
+			</div>
+			<div className='btn'>
+				<a target={'_blank'} download rel="noreferrer" href={download}>
+					<IconDownload style={{ fontSize: 12 }} />
+				</a>
+			</div>
+			<div className="btn">
+				<IconDelete
+					style={{ fontSize: 12 }}
+					onClick={() => {
+						props.onRemove(file);
+					}}
+				/>
+			</div>
+		</div>
+		<style jsx>{`
+.btn{
+padding: 1rem;
+cursor: pointer;
+}
+.btns{
+display: flex;
+flex-direction: row;
+}
+.item{
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+padding: 1rem;
+}
+`}</style>
+	</div>;
 }
