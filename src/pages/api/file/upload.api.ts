@@ -9,6 +9,7 @@ const logger = anylogger('pages/api/upload');
 export type Result = {
 	ok: true;
 	fileid: string;
+	filename: string;
 } | {
 	ok: false;
 	message: string;
@@ -56,7 +57,11 @@ handler.put(async (req, res) => {
 		logger.debug('msg body:', req.body);
 		// 解析并保存文件
 		const [file] = await an45(req);
-		res.status(200).json({ ok: true, fileid: file.id });
+		res.status(200).json({
+			ok: true,
+			fileid: file.id,
+			filename: file.name
+		});
 	} catch (error) {
 		logger.trace(error);
 		res.status(200).json({ ok: false, message: (error as Error).message });
@@ -66,7 +71,11 @@ handler.put(async (req, res) => {
 		logger.debug('msg body:', req.body);
 		// 解析并保存文件
 		const [file] = await an45(req);
-		res.status(200).json({ ok: true, fileid: file.id });
+		res.status(200).json({
+			ok: true,
+			fileid: file.id,
+			filename: file.name
+		});
 	} catch (error) {
 		logger.trace(error);
 		res.status(200).json({ ok: false, message: (error as Error).message });
