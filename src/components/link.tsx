@@ -6,5 +6,6 @@ export default function Link({
 	children,
 	...other
 }: AnchorHTMLAttributes<HTMLAnchorElement>) {
-	return <NextLink href={href}><a {...other}>{children}</a></NextLink>;
+	const { style = { textDecoration: 'none' }, ...rest } = other;
+	return <NextLink href={href}><a style={style} {...rest}>{children}</a></NextLink>;
 }
