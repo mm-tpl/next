@@ -1,22 +1,35 @@
 import { useState } from 'react';
-import { Message, Upload } from '@arco-design/web-react';
+import { Progress, Tooltip, Upload } from '@arco-design/web-react';
 import { UploadItem, UploadListProps } from '@arco-design/web-react/es/Upload';
-import { IconDelete, IconDownload, IconEye } from '@arco-design/web-react/icon';
+import { IconDelete, IconDownload, IconEye, IconPause, IconPlayArrowFill, IconUpload } from '@arco-design/web-react/icon';
 import { File, Result } from '../pages/api/file/upload.api';
 import api from '../atoms/api';
 import deletefile from '../pages/api/file/delete/deletefile';
+
+export type FunRenderFileItem = (name: string, fileid: string, onRemove: () => void) => JSX.Element;
 
 /**
  * 文件上传
  */
 export default function Uploader({
+	limit,
+	deleteFileOnServer = false,
 	multiple = false,
 	defaultFiles = [],
-	onChange
+	onChange,
+	onRenderFileItem = FileCardDone,
+	onCheckFileType = () => true
 }: {
+	limit?: number | {
+		maxCount: number;
+		hideOnExceedLimit?: boolean;
+	};
+	deleteFileOnServer: boolean;
 	multiple: boolean;
 	defaultFiles: File[];
 	onChange(files: File[]): void;
+	onRenderFileItem?: FunRenderFileItem;
+	onCheckFileType?(filetype: string): boolean | Promise<boolean>;
 }) {
 	const endpoint = api['/api/file/upload'];
 	const getfile = api['/api/file/id'];
@@ -34,6 +47,7 @@ export default function Uploader({
 	}));
 	return <>
 		<Upload
+			limit={limit}
 			multiple={multiple}
 			fileList={filelist}
 			action={endpoint}
@@ -51,9 +65,7 @@ export default function Uploader({
 				setfilelist(files);
 			}}
 			beforeUpload={(file) => {
-				return true;
-				// console.log('before upload', file);
-				// todo 更多类型判定
+				return onCheckFileType(file.type);
 				// 全部图片类型
 				// if (/image/.test(file.type)) {
 				// 	return true;
@@ -89,16 +101,18 @@ export default function Uploader({
 				// Message.error('不支持的文件类型');
 				// return false;
 			}}
-			// onRemove={async (file) => {
-			// 	// todo 如果不希望直接在文件服务器删除文件，而是在业务逻辑上删除文件，去掉以下代码
-			// 	const res = file.response as Result;
-			// 	await deletefile({
-			// 		id: res.fileid
-			// 	});
-			// }}
+			onRemove={async (file) => {
+				if (deleteFileOnServer) {
+					const res = file.response as Result;
+					await deletefile({
+						id: res.fileid
+					});
+				}
+			}}
 			renderUploadList={(files, props) => {
+				console.log('eeeee', files);
 				return files.map((file) => {
-					return <FileCard key={file.uid} file={file} props={props} />;
+					return <FileCard key={file.uid} file={file} props={props} onRenderFileItem={onRenderFileItem} />;
 				});
 			}}
 		/>
@@ -107,52 +121,154 @@ export default function Uploader({
 
 function FileCard({
 	file,
-	props
+	props,
+	onRenderFileItem
 }: {
 	file: UploadItem;
 	props: UploadListProps;
+	onRenderFileItem: FunRenderFileItem;
 }) {
-	const f = file.response as Result;
-	if (!f) {
-		return <>Loading</>;
+	const { status, percent } = file;
+	const { progressProps } = props;
+	if (status === 'error') {
+		return <FileCardError
+			errMsg={file.response as unknown as string}
+			onClick={() => {
+				props.onReupload(file);
+			}}
+		/>;
 	}
-	if (file.status === 'error') {
-		return <div>Error:{file.response} </div>;
+	if (status === 'done') {
+		const f = file.response as Result;
+		return onRenderFileItem(f.filename, f.fileid, () => {
+			props.onRemove(file);
+		});
 	}
-	if (!f || file.status !== 'done') {
-		return <>Loading</>;
-	}
-	const preview = `${api['/api/file/preview/id']}/${f.fileid}`;
-	const download = `${api['/api/file/id']}/${f.fileid}`;
+	// if (!f) {
+	// 	return <><Spin dot /></>;
+	// }
+	// if (!f || file.status !== 'done') {
+	// 	return <><Spin dot /></>;
+	// }
+	return <div>
+		<Progress
+			showText={false}
+			type="circle"
+			status='normal'
+			percent={percent}
+			size="mini"
+			{...progressProps}
+		/>
+		{status === 'init' && (
+			<FileCardInit
+				onClick={() => {
+					props.onUpload && props.onUpload(file);
+				}}
+			/>
+		)}
+
+		{status === 'uploading' && (
+			<FileCardUploading
+				onClick={() => {
+					props.onAbort && props.onAbort(file);
+				}}
+			/>
+		)}
+	</div>;
+}
+
+function FileCardUploading({
+	onClick
+}: {
+	onClick(): void;
+}) {
+	return <span
+		onClick={onClick}
+	>
+		<Tooltip content='取消'>
+			<IconPause />
+		</Tooltip>
+	</span>;
+}
+
+function FileCardInit({
+	onClick
+}: {
+	onClick(): void;
+}) {
+	return <span
+		onClick={onClick}
+	>
+		<Tooltip content='开始上传'>
+			<IconPlayArrowFill />
+		</Tooltip>
+	</span>;
+}
+
+function FileCardError({
+	errMsg,
+	onClick
+}: {
+	errMsg: string;
+	onClick(): void;
+}) {
+	return <div className='ec' onClick={onClick}>
+		<div>
+			<span>Error: </span>
+			<span>{errMsg} </span>
+		</div>
+		<div className='reupload'>
+			<span className='txt'>重新上传
+			</span>
+			<IconUpload />
+		</div>
+		<style jsx>{`
+.ec{
+color: #f00;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+padding: 0 2rem;
+}
+.reupload{
+cursor: pointer;
+}
+.txt{
+	padding: 0 1rem;
+}
+`}</style>
+	</div>;
+}
+
+function FileCardDone(name: string, fileid: string, onRemove: () => void) {
+	const preview = `${api['/api/file/preview/id']}/${fileid}`;
+	const download = `${api['/api/file/id']}/${fileid}`;
 	return <div className='item'>
 		<a target={'_blank'} rel="noreferrer" href={preview}>
 			<div>
-				{file.name}
+				{name}
 			</div>
 		</a>
 		<div className='btns'>
 			<div className='btn'>
 				<a target={'_blank'} rel="noreferrer" href={preview}>
-					<IconEye style={{ fontSize: 12 }} />
+					<IconEye />
 				</a>
 			</div>
 			<div className='btn'>
 				<a target={'_blank'} download rel="noreferrer" href={download}>
-					<IconDownload style={{ fontSize: 12 }} />
+					<IconDownload />
 				</a>
 			</div>
 			<div className="btn">
 				<IconDelete
-					style={{ fontSize: 12 }}
-					onClick={() => {
-						props.onRemove(file);
-					}}
+					onClick={onRemove}
 				/>
 			</div>
 		</div>
 		<style jsx>{`
 .btn{
-padding: 1rem;
+padding: 0.5rem;
 cursor: pointer;
 }
 .btns{
@@ -160,11 +276,14 @@ display: flex;
 flex-direction: row;
 }
 .item{
+width: 70%;
 display: flex;
 flex-direction: row;
 justify-content: space-between;
-padding: 1rem;
+align-items: center;
+margin-top: .625rem;
 }
 `}</style>
 	</div>;
+
 }
