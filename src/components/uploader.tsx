@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import { ElementType, ReactNode, useEffect, useState } from 'react';
 import { Progress, Tooltip, Upload } from '@arco-design/web-react';
 import { UploadItem, UploadListProps } from '@arco-design/web-react/es/Upload';
 import { IconDelete, IconDownload, IconEye, IconPause, IconPlayArrowFill, IconUpload } from '@arco-design/web-react/icon';
-import { File, Result } from '../pages/api/file/upload.api';
+import { File as FdFile, Result } from '../pages/api/file/upload.api';
 import api from '../atoms/api';
 import deletefile from '../pages/api/file/delete/deletefile';
 
 export type FunRenderFileItem = (name: string, fileid: string, onRemove: () => void) => JSX.Element;
+
+export type UploadFile = FdFile & {
+	previewUrl: string;
+	downloadUrl: string;
+};
 
 /**
  * 文件上传
@@ -15,21 +20,56 @@ export default function Uploader({
 	limit,
 	deleteFileOnServer = false,
 	multiple = false,
+	files,
 	defaultFiles = [],
 	onChange,
-	onRenderFileItem = FileCardDone,
-	onCheckFileType = () => true
+	onAdd,
+	CustomUploadedFileList = UploadedFileList,
+	onCheck = () => true
 }: {
+	/**
+	 * 允许上传多个文件时限制最多可上传文件数量
+	 */
 	limit?: number | {
 		maxCount: number;
 		hideOnExceedLimit?: boolean;
 	};
+	/**
+	 * 点击删除按钮时，在服务器上删除该文件
+	 */
 	deleteFileOnServer: boolean;
+	/**
+	 * 是否允许上传多个文件
+	 */
 	multiple: boolean;
-	defaultFiles: File[];
-	onChange(files: File[]): void;
-	onRenderFileItem?: FunRenderFileItem;
-	onCheckFileType?(filetype: string): boolean | Promise<boolean>;
+	/**
+	 * 默认展示的文件列表
+	 */
+	defaultFiles: FdFile[];
+	/**
+	 * 受控模式
+	 */
+	files?: FdFile[];
+	/**
+	 * 文件列表有改变时触发
+	 * @param files 文件列表
+	 */
+	onChange?(files: FdFile[]): void;
+	/**
+	 * 文件列表新增文件
+	 * @param file 上传的文件
+	 */
+	onAdd?(file: FdFile): void;
+	/**
+	 * 自定义已上传文件列表
+	 */
+	CustomUploadedFileList?: ElementType<{
+		// 全部已上传文件列表
+		files: UploadFile[];
+		// 自定义组件中删除已上传文件时要触发该事件
+		onRemove: (file: UploadFile) => void;
+	}>;
+	onCheck?(file: File, filesList: File[]): boolean | Promise<any>;
 }) {
 	const endpoint = api['/api/file/upload'];
 	const getfile = api['/api/file/id'];
@@ -45,6 +85,22 @@ export default function Uploader({
 			url: `${getfile}/${file.fileid}`
 		} as UploadItem;
 	}));
+	useEffect(() => {
+		if (files) {
+			setfilelist(files.map((file) => {
+				return {
+					uid: file.fileid,
+					name: file.filename,
+					response: {
+						fileid: file.fileid,
+						filename: file.filename
+					},
+					status: 'done',
+					url: `${getfile}/${file.fileid}`
+				} as UploadItem;
+			}));
+		}
+	}, [files]);
 	return <>
 		<Upload
 			limit={limit}
@@ -53,7 +109,14 @@ export default function Uploader({
 			action={endpoint}
 			listType='text'
 			onChange={(files, file) => {
-				onChange(files.filter((file) => {
+				if (onAdd && file.status === 'done') {
+					const res = file.response as Result;
+					onAdd({
+						fileid: res.fileid,
+						filename: res.filename
+					});
+				}
+				onChange && onChange(files.filter((file) => {
 					return file.status === 'done';
 				}).map((file) => {
 					const res = file.response as Result;
@@ -64,8 +127,8 @@ export default function Uploader({
 				}));
 				setfilelist(files);
 			}}
-			beforeUpload={(file) => {
-				return onCheckFileType(file.type);
+			beforeUpload={(file, files) => {
+				return onCheck(file, files);
 				// 全部图片类型
 				// if (/image/.test(file.type)) {
 				// 	return true;
@@ -110,23 +173,89 @@ export default function Uploader({
 				}
 			}}
 			renderUploadList={(files, props) => {
-				console.log('eeeee', files);
-				return files.map((file) => {
-					return <FileCard key={file.uid} file={file} props={props} onRenderFileItem={onRenderFileItem} />;
+				console.log('aaaaaaaaa', files);
+				const uploaded = files.filter((file) => {
+					return file.status === 'done';
+				}).map((file) => {
+					const f = file.response as Result;
+					const fileid = f.fileid;
+					const previewUrl = `${api['/api/file/preview/id']}/${fileid}`;
+					const downloadUrl = `${api['/api/file/id']}/${fileid}`;
+					return {
+						...f,
+						previewUrl,
+						downloadUrl
+					};
 				});
+				const notUploaded = files.filter((file) => {
+					return file.status !== 'done';
+				});
+				return <div>
+					<CustomUploadedFileList files={uploaded} onRemove={(file) => {
+						const f = files.find((it) => {
+							const r = it.response as Result;
+							return r.fileid === file.fileid;
+						});
+						if (f) {
+							props.onReupload(f);
+						}
+					}} />
+					<UnUploadedFileList files={notUploaded} props={props} />
+				</div>;
 			}}
 		/>
 	</>;
 }
 
+function UploadedFileList({
+	files,
+	onRemove
+}: {
+	// 全部已上传文件列表
+	files: UploadFile[];
+	// 自定义组件中删除已上传文件时要触发该事件
+	onRemove: (file: UploadFile) => void;
+}) {
+	return <div>
+		{files.map((file) => {
+			const fileid = file.fileid;
+			return <FileCardDone
+				previewUrl={file.previewUrl}
+				downloadUrl={file.downloadUrl}
+				key={file.fileid}
+				name={file.filename}
+				fileid={file.fileid}
+				onRemove={() => {
+					onRemove(file);
+				}}
+			/>;
+		})}
+	</div>;
+}
+
+/**
+ * 未上传文件列表
+ */
+function UnUploadedFileList({
+	files,
+	props
+}: {
+	files: UploadItem[];
+	props: UploadListProps;
+}) {
+	return <div>
+		{files.map((file) => {
+			return <FileCard key={file.uid} file={file} props={props} />;
+		})}
+	</div>;
+}
+
 function FileCard({
 	file,
-	props,
-	onRenderFileItem
+	props
 }: {
 	file: UploadItem;
 	props: UploadListProps;
-	onRenderFileItem: FunRenderFileItem;
 }) {
 	const { status, percent } = file;
 	const { progressProps } = props;
@@ -140,9 +269,18 @@ function FileCard({
 	}
 	if (status === 'done') {
 		const f = file.response as Result;
-		return onRenderFileItem(f.filename, f.fileid, () => {
-			props.onRemove(file);
-		});
+		const fileid = f.fileid;
+		const previewUrl = `${api['/api/file/preview/id']}/${fileid}`;
+		const downloadUrl = `${api['/api/file/id']}/${fileid}`;
+		return <FileCardDone
+			previewUrl={previewUrl}
+			downloadUrl={downloadUrl}
+			name={f.filename}
+			fileid={f.fileid}
+			onRemove={() => {
+				props.onRemove(file);
+			}}
+		/>;
 	}
 	// if (!f) {
 	// 	return <><Spin dot /></>;
@@ -240,23 +378,33 @@ cursor: pointer;
 	</div>;
 }
 
-function FileCardDone(name: string, fileid: string, onRemove: () => void) {
-	const preview = `${api['/api/file/preview/id']}/${fileid}`;
-	const download = `${api['/api/file/id']}/${fileid}`;
+function FileCardDone({
+	name,
+	fileid,
+	previewUrl,
+	downloadUrl,
+	onRemove
+}: {
+	name: string;
+	fileid: string;
+	previewUrl: string;
+	downloadUrl: string;
+	onRemove: () => void;
+}) {
 	return <div className='item'>
-		<a target={'_blank'} rel="noreferrer" href={preview}>
+		<a target={'_blank'} rel="noreferrer" href={previewUrl}>
 			<div>
 				{name}
 			</div>
 		</a>
 		<div className='btns'>
 			<div className='btn'>
-				<a target={'_blank'} rel="noreferrer" href={preview}>
+				<a target={'_blank'} rel="noreferrer" href={previewUrl}>
 					<IconEye />
 				</a>
 			</div>
 			<div className='btn'>
-				<a target={'_blank'} download rel="noreferrer" href={download}>
+				<a download rel="noreferrer" href={downloadUrl}>
 					<IconDownload />
 				</a>
 			</div>
