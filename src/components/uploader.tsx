@@ -173,7 +173,6 @@ export default function Uploader({
 				}
 			}}
 			renderUploadList={(files, props) => {
-				console.log('aaaaaaaaa', files);
 				const uploaded = files.filter((file) => {
 					return file.status === 'done';
 				}).map((file) => {
