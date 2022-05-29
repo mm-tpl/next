@@ -45,7 +45,7 @@ export default function Uploader({
 	/**
 	 * 默认展示的文件列表
 	 */
-	defaultFiles: FdFile[];
+	defaultFiles?: FdFile[];
 	/**
 	 * 受控模式
 	 */
@@ -196,7 +196,7 @@ export default function Uploader({
 							return r.fileid === file.fileid;
 						});
 						if (f) {
-							props.onReupload(f);
+							props.onRemove(f);
 						}
 					}} />
 					<UnUploadedFileList files={notUploaded} props={props} />
@@ -399,17 +399,17 @@ function FileCardDone({
 		<div className='btns'>
 			<div className='btn'>
 				<a target={'_blank'} rel="noreferrer" href={previewUrl}>
-					<IconEye />
+					<IconEye fontSize={'1.5rem'} />
 				</a>
 			</div>
 			<div className='btn'>
 				<a download rel="noreferrer" href={downloadUrl}>
-					<IconDownload />
+					<IconDownload fontSize={'1.4rem'} />
 				</a>
 			</div>
 			<div className="btn">
 				<IconDelete
-					onClick={onRemove}
+					onClick={onRemove} fontSize={'1.5rem'}
 				/>
 			</div>
 		</div>
