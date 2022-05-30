@@ -109,22 +109,24 @@ export default function Uploader({
 			action={endpoint}
 			listType='text'
 			onChange={(files, file) => {
-				if (onAdd && file.status === 'done') {
-					const res = file.response as Result;
-					onAdd({
-						fileid: res.fileid,
-						filename: res.filename
-					});
+				if (file.status === 'done') {
+					if (onAdd) {
+						const res = file.response as Result;
+						onAdd({
+							fileid: res.fileid,
+							filename: res.filename
+						});
+					}
+					onChange && onChange(files.filter((file) => {
+						return file.status === 'done';
+					}).map((file) => {
+						const res = file.response as Result;
+						return {
+							fileid: res.fileid,
+							filename: res.filename
+						};
+					}));
 				}
-				onChange && onChange(files.filter((file) => {
-					return file.status === 'done';
-				}).map((file) => {
-					const res = file.response as Result;
-					return {
-						fileid: res.fileid,
-						filename: res.filename
-					};
-				}));
 				setfilelist(files);
 			}}
 			beforeUpload={(file, files) => {
@@ -173,6 +175,7 @@ export default function Uploader({
 				}
 			}}
 			renderUploadList={(files, props) => {
+				// console.log('2222', files);
 				const uploaded = files.filter((file) => {
 					return file.status === 'done';
 				}).map((file) => {
