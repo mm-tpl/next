@@ -16,7 +16,7 @@ const nextConfig = {
 	// },
 	pageExtensions: ['page.tsx', 'api.ts'],
 	async redirects() {
-		return [
+		return process.env.NODE_ENV === 'development' ? [] : [
 			// {
 			// 	source: '/',
 			// 	destination: '/pg001',
