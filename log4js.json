@@ -6,9 +6,9 @@
 		"DAILYFILE": {
 			"type": "dateFile",
 			"filename": "./logs/mm.log",
-			"pattern": ".yyyy-MM-dd-hh",
+			"pattern": "yyyy-MM-dd-hh",
 			"alwaysIncludePattern": false,
-			"daysToKeep": 13,
+			"daysToKeep": 30,
 			"maxLogSize": 20971520,
 			"keepFileExt": true
 		}
