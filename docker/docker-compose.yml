@@ -6,6 +6,9 @@ services:
     # restart: unless-stopped
     ports:
       - 3456:80
+    environment:
+      # - NGINX_HOST=foobar.com
+      - NGINX_PORT=3456
     depends_on:
       - 01factory-web
       - adminer
