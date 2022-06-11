@@ -1,0 +1,73 @@
+---
+- name: Deploy
+  hosts: "{{host}}"
+  remote_user: '{{ user }}'
+  tasks:
+    - name: Create Source Directory
+      register: createSrcDirState
+      changed_when: true
+      ansible.builtin.file:
+        force: yes
+        path: "{{ source }}"
+        state: directory
+
+    - name: Create app Directory
+      changed_when: true
+      register: createAppDirState
+      ansible.builtin.file:
+        force: yes
+        path: "{{ app }}"
+        state: directory
+
+    - name: Git checkout
+      when: createSrcDirState.changed and createAppDirState.changed
+      register: pullStates
+      ansible.builtin.git:
+        single_branch: yes
+        repo: "{{ repo }}"
+        dest: "{{ source }}"
+        version: "{{ branch }}"
+
+    - name: Downloads dependences
+      when: pullStates.changed
+      failed_when: false
+      ansible.builtin.command:
+        cmd: yarn
+        chdir: "{{ source }}"
+
+    - name: Build images
+      when: pullStates.changed
+      register: buildStatus
+      ansible.builtin.command:
+        cmd: docker-compose -f ./docker/build.yml build 01factory-web
+        chdir: "{{ source }}"
+
+    - name: Copy compose file
+      when: buildStatus.changed
+      register: copyStatus
+      ansible.builtin.copy:
+        src: "{{ compose }}"
+        dest: "{{ app }}/docker-compose.yml"
+        remote_src: yes
+
+    - name: Restart containers
+      when: copyStatus.changed
+      changed_when: restartStatus.rc == 1
+      failed_when: false
+      register: restartStatus
+      ansible.builtin.command:
+        cmd: docker-compose up -d
+        chdir: "{{ app }}"
+
+    - name: Rebuild All Images
+      when: restartStatus.changed == false
+      register: rebuildAllStatus
+      ansible.builtin.command:
+        cmd: docker-compose -f ./docker/build.yml build
+        chdir: "{{ source }}"
+
+    - name: Start containers firstTime
+      when: rebuildAllStatus.changed
+      ansible.builtin.command:
+        cmd: docker-compose up -d
+        chdir: "{{ app }}"

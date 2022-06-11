@@ -1,0 +1,13 @@
+---
+- ansible.builtin.import_playbook: ./deploy.yml
+  vars:
+    host: xxx
+    user: root
+    project: xxx
+    name: xxx
+    branch: prod
+    basePath: ~/01factory
+    repo: git@e.coding.net:dfactory01/{{ project }}/{{ name }}.git
+    source: "{{ basePath }}/{{ project }}/{{ name }}-src"
+    app: "{{ basePath }}/{{ project }}/{{ name }}-app"
+    compose: "{{ source }}/docker/prod.yml"

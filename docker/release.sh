@@ -1,0 +1,3 @@
+curl https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=08d6354d-5048-48f4-8754-943e0e4af2a3 -d '{"msgtype":"text", "text":{ "content": "xxx正式服务器开始更新:'"`date +%F' '%X`"'"}}'
+ansible-playbook -v ./docker/release.yml
+curl https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=08d6354d-5048-48f4-8754-943e0e4af2a3 -d '{"msgtype":"text", "text":{ "content": "xxx正式服务器更新成功:'"`date +%F' '%X`"'"}}'

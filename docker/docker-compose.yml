@@ -3,12 +3,10 @@ version: '3.8'
 services:
   nginx:
     image: dfactory01-docker.pkg.coding.net/01factory/core/nginx:latest
-    # restart: unless-stopped
-    ports:
-      - 3456:80
     environment:
-      # - NGINX_HOST=foobar.com
       - NGINX_PORT=3456
+    ports:
+      - 3456:3456
     depends_on:
       - 01factory-web
       - adminer
@@ -21,28 +19,21 @@ services:
   01factory-web:
     stdin_open: true
     tty: true
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:dev
+    image: dfactory01-docker.pkg.coding.net/01factory/core/web:latest
     volumes:
       - ./data/01factory:/01factory
-      - ~/.ssh:/root/.ssh
     links:
       - db
       - minio
       - 01factory-doccode:docode
 
-  # 01factory-web:
-  #   image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
-  #   # restart: unless-stopped
-  #   volumes:
-  #     - ./data/01factory:/01factory
-  #   links:
-  #     - db
-  #     - minio
-  #     - 01factory-doccode:docode
+  db:
+    image: dfactory01-docker.pkg.coding.net/01factory/core/postgres:latest
+    volumes:
+      - ./data/postgres:/var/lib/postgresql
 
   01factory-doccode:
     image: dfactory01-docker.pkg.coding.net/01factory/core/doccode:latest
-    # restart: unless-stopped
     volumes:
       - ./data/01factory:/01factory
     links:
@@ -50,13 +41,11 @@ services:
 
   adminer:
     image: dfactory01-docker.pkg.coding.net/01factory/core/adminer:latest
-    # restart: unless-stopped
     links:
       - db
 
   minio:
     image: dfactory01-docker.pkg.coding.net/01factory/core/minio:latest
-    # restart: unless-stopped
     volumes:
       - ./data/minio:/data
 
@@ -64,22 +53,14 @@ services:
     stdin_open: true
     tty: true
     image: dfactory01-docker.pkg.coding.net/01factory/core/mc:latest
-    # restart: unless-stopped
     volumes:
       - ./data/mc:/root/.mc
       - ./data/files:/01factory
     links:
       - minio
 
-  db:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/db:latest
-    # restart: unless-stopped
-    volumes:
-      - ./data/postgres:/var/lib/postgresql
-
   fileview:
     image: dfactory01-docker.pkg.coding.net/01factory/core/fileview:latest
-    # restart: unless-stopped
     volumes:
       - ./data/01factory:/01factory
     links:

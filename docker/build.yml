@@ -1,20 +1,14 @@
 version: "3.8"
 
 services:
-  01factory-dev:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:dev
-    build:
-      context: ..
-      dockerfile: ./docker/dev
-
   01factory-web:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/web:latest
+    image: 01factory/xxx/xxxxxx/web:latest
     build:
       context: ..
       dockerfile: ./docker/web
 
   db:
-    image: dfactory01-docker.pkg.coding.net/xxxxxx/xxxxxx/db:latest
+    image: 01factory/xxx/xxxxxx/db:latest
     build:
       context: ..
       dockerfile: ./docker/postgres
