@@ -60,7 +60,7 @@
         chdir: "{{ app }}"
 
     - name: Rebuild All Images
-      when: restartStatus.changed == false
+      when: restartStatus.changed == false and pullStates.changed
       register: rebuildAllStatus
       ansible.builtin.command:
         cmd: docker-compose -f ./docker/build.yml build
