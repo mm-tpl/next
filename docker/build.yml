@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  01factory-web:
+  01factory:
     image: 01factory/xxx/xxxxxx/web:latest
     build:
       context: ..
