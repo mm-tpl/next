@@ -1,0 +1,596 @@
+openapi: 3.0.0
+info:
+  version: 1.2.0
+  title: ka config request
+  description: 企培配置API
+servers:
+  - url: "http://localhost:18080/api/v1/config"
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    errorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 状态码
+        message:
+          type: string
+          description: 描述信息
+    Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        path:
+          type: string
+    defaultConfig:
+      type: object
+      required:
+        - welcome_message
+        - calendar_permissions
+        - b_show_on_main_calendar
+        - event_reminder_minutes
+        - task_complete_statistics
+      properties:
+        sync_method:
+          type: string
+          description: 同步方法, 可选字段, enum(lark_cloud_table,interface, third_party_product), 可以传枚举索引(int)或者值(string)
+        sync_frequency:
+          type: string
+          description: 同步频率, 可选字段, enum(real_time, cron), 可以传枚举索引(int)或者值(string)
+        welcome_message:
+          type: string
+          description: 入群欢迎语, 最长2047字符
+        calendar_permissions:
+          type: string
+          description: 日历公开范围, enum(private, public, show_only_free_busy), 可以传枚举索引(int)或者值(string)
+        b_show_on_main_calendar:
+          type: boolean
+          description: 是否展示到用户主日历
+        event_reminder_minutes:
+          description: (摘自飞书开放平台文档) 日程提醒时间的偏移量，正数时表示在日程开始前X分钟提醒，负数时表示在日程开始后X分钟提醒 取值范围：-20160 ～ 20160
+          type: array
+          items:
+            type: integer
+            format: int32
+        task_complete_statistics:
+          type: string
+          description: 群内任务提醒, enum(enable, disable, only_teacher_and_organizer), 可以传枚举索引(int)或者值(string)
+        task_reminder_minutes:
+          description: (摘自飞书开放平台文档) 相对于截止时间的提醒时间（如提前 30 分钟，截止时间后 30 分钟，则为 -30）
+          type: array
+          items:
+            type: integer
+            format: int32
+        can_join_course_via_calendar:
+          type: boolean
+          description: 是否可以通过日程加入课程
+        auto_create_chat:
+          type: boolean
+          description: 是否自动创建课程群聊
+        advance_days:
+          type: integer
+          format: int32
+          description: 自动创建群聊的提前时间（单位：天）
+        welcome_type:
+          type: string
+          description: 欢迎语格式
+        title:
+          type: string
+          description: 欢迎语标题
+        text:
+          type: string
+          description: 欢迎语正文内容
+        button_text:
+          type: string
+          description: 按钮文本
+        button_url:
+          type: string
+          description: 按钮链接
+        img_key:
+          type: string
+          description: 图片
+        task_id:
+          type: integer
+          format: int64
+          description: 任务id
+        chat_reminder_days:
+          type: string
+          description: 群聊
+        reminder_content:
+          type: string
+          description: 保留文本
+    course:
+      type: object
+      required:
+        - course_id
+        - name
+        - description
+        - calendar_permissions
+        - b_show_on_main_calendar
+        - manager
+      properties:
+        course_id:
+          type: string
+          description: 课程 id
+        name:
+          type: string
+          description: 课程名称
+        description:
+          type: string
+          description: 课程描述
+        calendar_permissions:
+          type: string
+          description: 日历公开范围, enum(private, public, show_only_free_busy), 可以传枚举索引(int)或者值(string)
+        b_show_on_main_calendar:
+          type: boolean
+          description: 是否展示到用户主日历
+        manager:
+          type: array
+          description: 课程管理员列表
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+    courseConfig:
+      type: object
+      required:
+        - welcome_message
+        - calendar_permissions
+        - b_show_on_main_calendar
+      properties:
+        welcome_message:
+          type: string
+          description: 入群欢迎语, 最长2047字符
+        calendar_permissions:
+          type: string
+          description: 日历公开范围, enum(private, public, show_only_free_busy), 可以传枚举索引(int)或者值(string)
+        b_show_on_main_calendar:
+          type: boolean
+          description: 是否展示到用户主日历
+        event_reminder_minutes:
+          description: (摘自飞书开放平台文档) 日程提醒时间的偏移量，正数时表示在日程开始前X分钟提醒，负数时表示在日程开始后X分钟提醒 取值范围：-20160 ～ 20160
+          type: array
+          items:
+            type: integer
+            format: int32
+        can_join_course_via_calendar:
+          type: boolean
+          description: 是否可以通过日程加入课程
+        auto_create_chat:
+          type: boolean
+          description: 是否自动创建群聊
+        advance_days:
+          type: integer
+          format: int32
+          description: 自动创建群聊提前时间（单位：天）
+        need_survey:
+          type: boolean
+          description: 是否需要问卷
+        survey_url:
+          type: string
+          description: 问卷链接
+        welcome_type:
+          type: string
+          description: 欢迎语类型
+        title:
+          type: string
+          description: 欢迎语标题
+        text:
+          type: string
+          description: 欢迎语正文内容
+        button_text:
+          type: string
+          description: 按钮文本
+        button_url:
+          type: string
+          description: 按钮链接
+        img_key:
+          type: string
+          description: 图片
+        tasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/task"
+
+    courseUpdateConfig:
+      type: object
+      required:
+        - calendar_permissions
+        - b_show_on_main_calendar
+      properties:
+        calendar_permissions:
+          type: string
+          description: 日历公开范围, enum(private, public, show_only_free_busy), 可以传枚举索引(int)或者值(string)
+        b_show_on_main_calendar:
+          type: boolean
+          description: 是否展示到用户主日历
+        event_reminder_minutes:
+          description: (摘自飞书开放平台文档) 日程提醒时间的偏移量，正数时表示在日程开始前X分钟提醒，负数时表示在日程开始后X分钟提醒 取值范围：-20160 ～ 20160
+          type: array
+          items:
+            type: integer
+            format: int32
+        tasks:
+          description: 任务列表
+          type: array
+          items:
+            type: object
+            required:
+              - task_id
+              - task_complete_statistics
+            properties:
+              task_id:
+                type: integer
+                format: int64
+                description: 任务id
+              task_complete_statistics:
+                type: string
+                description: 群内任务提醒, enum(enable, disable, only_teacher_and_organizer), 可以传枚举索引(int)或者值(string)
+              task_reminder_minutes:
+                description: (摘自飞书开放平台文档) 相对于截止时间的提醒时间（如提前 30 分钟，截止时间后 30 分钟，则为 -30）
+                type: array
+                items:
+                  type: integer
+                  format: int32
+    task:
+      type: object
+      required:
+        - task_id
+        - name
+        - description
+        - task_complete_statistics
+      properties:
+        task_id:
+          type: string
+          description: 任务 id
+        name:
+          type: string
+          description: 任务名称
+        description:
+          type: string
+          description: 任务描述
+        task_complete_statistics:
+          type: string
+          description: 群内任务提醒, enum(enable, disable, only_teacher_and_organizer), 可以传枚举索引(int)或者值(string)
+        task_reminder_minutes:
+          description: (摘自飞书开放平台文档) 相对于截止时间的提醒时间（如提前 30 分钟，截止时间后 30 分钟，则为 -30）
+          type: array
+          items:
+            type: integer
+            format: int32
+    taskConfig:
+      type: object
+      required:
+        - task_complete_statistics
+      properties:
+        task_complete_statistics:
+          type: string
+          description: 群内任务提醒, enum(enable, disable, only_teacher_and_organizer), 可以传枚举索引(int)或者值(string)
+        task_reminder_minutes:
+          description: (摘自飞书开放平台文档) 相对于截止时间的提醒时间（如提前 30 分钟，截止时间后 30 分钟，则为 -30）
+          type: array
+          items:
+            type: integer
+            format: int32
+    pageInfo:
+      type: object
+      required:
+        - page_size
+        - page_num
+        - total_cnt
+      properties:
+        page_size:
+          type: integer
+          format: int32
+          description: 页面大小
+        page_num:
+          description: 页码（从0开始)
+          type: integer
+          format: int32
+        total_cnt:
+          description: 数据总数
+          type: integer
+          format: int32
+    courseListConfig:
+      type: object
+      required:
+        - welcome_message
+        - calendar_permissions
+        - b_show_on_main_calendar
+        - event_reminder_minutes
+        - task_complete_statistics
+      properties:
+        welcome_message:
+          type: string
+          description: 入群欢迎语, 最长2047字符
+        calendar_permissions:
+          type: string
+          description: 日历公开范围, enum(private, public, show_only_free_busy), 可以传枚举索引(int)或者值(string)
+        b_show_on_main_calendar:
+          type: boolean
+          description: 是否展示到用户主日历
+        event_reminder_minutes:
+          description: (摘自飞书开放平台文档) 日程提醒时间的偏移量，正数时表示在日程开始前X分钟提醒，负数时表示在日程开始后X分钟提醒 取值范围：-20160 ～ 20160
+          type: array
+          items:
+            type: integer
+            format: int32
+        task_complete_statistics:
+          type: string
+          description: 群内任务提醒, enum(enable, disable, only_teacher_and_organizer), 可以传枚举索引(int)或者值(string)
+        task_reminder_minutes:
+          description: (摘自飞书开放平台文档) 相对于截止时间的提醒时间（如提前 30 分钟，截止时间后 30 分钟，则为 -30）
+          type: array
+          items:
+            type: integer
+            format: int32
+
+paths:
+  /courseconfig:
+    put:
+      summary: "批量修改课程配置"
+      security:
+        - tokenAuth: []
+      tags:
+        - course
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                course_config:
+                  $ref: "#/components/schemas/courseListConfig"
+                course_id_list:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+      responses:
+        "200":
+          description: "update success"
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: string
+                    description: 状态码
+                  message:
+                    type: string
+                    description: 描述信息
+                  data:
+                    $ref: "#/components/schemas/courseListConfig"
+        "x-40410":
+          description: "course not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /globalcalendar:
+    put:
+      summary: 开启/关闭全局日历
+      tags:
+        - default
+      security:
+        - tokenAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                open_global_calendar:
+                  type: boolean
+      responses:
+        "200":
+          description: "update success"
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: string
+                    description: 状态码
+                  message:
+                    type: string
+                    description: 描述信息
+                  data:
+                    properties:
+                      open_global_calendar:
+                        type: boolean
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /defaultconfig:
+    post:
+      summary: 更新企业默认配置
+      tags:
+        - default
+      security:
+        - tokenAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/defaultConfig"
+      responses:
+        "200":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: string
+                    description: 状态码
+                  message:
+                    type: string
+                    description: 描述信息
+                  data:
+                    $ref: "#/components/schemas/defaultConfig"
+        "x-50011":
+          description: unexpected response of lark request 'create calendar'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: 获取企业默认配置
+      tags:
+        - default
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "require success"
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: string
+                    description: 状态码
+                  message:
+                    type: string
+                    description: 描述信息
+                  data:
+                    $ref: "#/components/schemas/defaultConfig"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /courseconfig/{course_id}:
+    get:
+      summary: "获取某一课程配置"
+      security:
+        - tokenAuth: []
+      tags:
+        - course
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          description: 课程 id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/courseConfig"
+      responses:
+        "200":
+          description: "require success"
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: string
+                    description: 状态码
+                  message:
+                    type: string
+                    description: 描述信息
+                  data:
+                    $ref: "#/components/schemas/courseConfig"
+        "x-40410":
+          description: "course not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: "修改某一课程配置"
+      security:
+        - tokenAuth: []
+      tags:
+        - course
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          description: 课程 id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/courseUpdateConfig"
+      responses:
+        "200":
+          description: "update success"
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: string
+                    description: 状态码
+                  message:
+                    type: string
+                    description: 描述信息
+                  data:
+                    $ref: "#/components/schemas/courseUpdateConfig"
+        "x-40410":
+          description: "course not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        "x-40411":
+          description: "task not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"

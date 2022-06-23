@@ -65,3 +65,9 @@ services:
       - ./data/01factory:/01factory
     links:
       - 01factory-web:webserver
+
+  docs:
+    image: dfactory01-docker.pkg.coding.net/01factory/core/docs:latest
+    volumes:
+      - ./data/01factory:/01factory
+      - /root/01factory/docs/api.yaml:/docs.yml
