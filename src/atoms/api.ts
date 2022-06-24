@@ -2,7 +2,6 @@ export default {
 	'/': '/01factory',
 	'/api/doccode': '/01factory/api/doccode',
 	'/api/file/delete/id': '/01factory/api/file/delete',
-	'/api/file/getposition': '/01factory/api/file/getposition',
 	'/api/file/id': '/01factory/api/file',
 	'/api/file/preview/id': '/01factory/api/file/preview',
 	'/api/file/preview/imgs/ids': '/01factory/api/file/preview/imgs',
