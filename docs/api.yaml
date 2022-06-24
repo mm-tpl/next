@@ -1,10 +1,28 @@
-openapi: 3.0.0
+openapi: 3.0.3
+
 info:
-  version: 1.2.0
-  title: ka config request
-  description: 企培配置API
+  version: 1.1.0
+  title: API文档
+  description: xxx系统API
+  license:
+    name: MIT
+    url: https://dfactory01.github.io/license
+  contact:
+    name: taoqf
+    email: tao_qiufeng@126.com
+
 servers:
-  - url: "http://localhost:18080/api/v1/config"
+  - url: /signup/api
+    description: xxx系统
+  - url: http://127.0.0.1:3456/signup/api
+    description: testxxx系统
+
+tags:
+  - name: 01factory
+    description: 01微工厂
+    externalDocs:
+      description: "查看更多"
+      url: https://dfactory01.github.io
 
 components:
   securitySchemes:
@@ -14,14 +32,8 @@ components:
       bearerFormat: JWT
   schemas:
     errorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: 状态码
-        message:
-          type: string
-          description: 描述信息
+      $ref: ./error.yml
+
     Error:
       type: object
       properties:
@@ -339,258 +351,17 @@ components:
             format: int32
 
 paths:
-  /courseconfig:
-    put:
-      summary: "批量修改课程配置"
-      security:
-        - tokenAuth: []
-      tags:
-        - course
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                course_config:
-                  $ref: "#/components/schemas/courseListConfig"
-                course_id_list:
-                  type: array
-                  items:
-                    type: integer
-                    format: int64
-      responses:
-        "200":
-          description: "update success"
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    type: string
-                    description: 状态码
-                  message:
-                    type: string
-                    description: 描述信息
-                  data:
-                    $ref: "#/components/schemas/courseListConfig"
-        "x-40410":
-          description: "course not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/errorResponse"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /globalcalendar:
-    put:
-      summary: 开启/关闭全局日历
-      tags:
-        - default
-      security:
-        - tokenAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                open_global_calendar:
-                  type: boolean
-      responses:
-        "200":
-          description: "update success"
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    type: string
-                    description: 状态码
-                  message:
-                    type: string
-                    description: 描述信息
-                  data:
-                    properties:
-                      open_global_calendar:
-                        type: boolean
-        "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/errorResponse"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /defaultconfig:
-    post:
-      summary: 更新企业默认配置
-      tags:
-        - default
-      security:
-        - tokenAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/defaultConfig"
-      responses:
-        "200":
-          description: "Created"
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    type: string
-                    description: 状态码
-                  message:
-                    type: string
-                    description: 描述信息
-                  data:
-                    $ref: "#/components/schemas/defaultConfig"
-        "x-50011":
-          description: unexpected response of lark request 'create calendar'
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/errorResponse"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    get:
-      summary: 获取企业默认配置
-      tags:
-        - default
-      security:
-        - tokenAuth: []
-      responses:
-        "200":
-          description: "require success"
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    type: string
-                    description: 状态码
-                  message:
-                    type: string
-                    description: 描述信息
-                  data:
-                    $ref: "#/components/schemas/defaultConfig"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /courseconfig/{course_id}:
-    get:
-      summary: "获取某一课程配置"
-      security:
-        - tokenAuth: []
-      tags:
-        - course
-      parameters:
-        - name: course_id
-          in: path
-          required: true
-          description: 课程 id
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/courseConfig"
-      responses:
-        "200":
-          description: "require success"
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    type: string
-                    description: 状态码
-                  message:
-                    type: string
-                    description: 描述信息
-                  data:
-                    $ref: "#/components/schemas/courseConfig"
-        "x-40410":
-          description: "course not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/errorResponse"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    put:
-      summary: "修改某一课程配置"
-      security:
-        - tokenAuth: []
-      tags:
-        - course
-      parameters:
-        - name: course_id
-          in: path
-          required: true
-          description: 课程 id
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/courseUpdateConfig"
-      responses:
-        "200":
-          description: "update success"
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    type: string
-                    description: 状态码
-                  message:
-                    type: string
-                    description: 描述信息
-                  data:
-                    $ref: "#/components/schemas/courseUpdateConfig"
-        "x-40410":
-          description: "course not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/errorResponse"
-        "x-40411":
-          description: "task not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/errorResponse"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+  /file/{id}:
+    $ref: ./file/[id].yml
+  /file/upload:
+    $ref: ./file/upload.yml
+  /file/preview/{id}:
+    $ref: ./file/preview/[id].yml
+  /file/preview/imgs/{ids}:
+    $ref: ./file/preview/imgs/[ids].yml
+  /file/delete/{id}:
+    $ref: ./file/delete/[id].yml
+  /account/signin:
+    $ref: ./account/signin.yml
+  /doccode:
+    $ref: ./doccode.yml

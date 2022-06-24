@@ -1,0 +1,15 @@
+get:
+  summary: 文件预览
+  description: 预览文件，支持图片，音频，视频，office,文本,可以加水印，水印目前不支持传参。需要各个项目单独定制水印策略.
+  tags:
+    - 01factory
+  parameters:
+    - name: id
+      description: 文件id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    200:
+      description: 打开图片的预览页面

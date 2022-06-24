@@ -1,0 +1,44 @@
+delete:
+  summary: 文件删除
+  description: |
+    将文件从文件服务器删除，删除之后，通过文件id就不能获取文件。
+  tags:
+    - 01factory
+  parameters:
+    - name: id
+      description: 文件id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    200:
+      description: 文件删除成功
+      content:
+        application/json:
+          description: 文件删除成功信息
+          properties:
+            ok:
+              description: 是否成功标识
+              type: boolean
+          example: { ok: true }
+    500:
+      description: 文件删除失败
+      content:
+        application/json:
+          schema:
+            description: 文件删除成功信息
+            properties:
+              ok:
+                description: 是否成功标识
+                type: boolean
+                example: false
+              message:
+                description: 删除失败的原因
+                type: string
+          # example: { ok: false, message: "服务器磁盘已满" }
+          examples:
+            磁盘已满:
+              value: { ok: false, message: "服务器磁盘已满" }
+            服务故障:
+              value: { ok: false, message: "服务器服务故障" }

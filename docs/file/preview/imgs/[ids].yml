@@ -1,0 +1,16 @@
+get:
+  summary: 图片预览
+  description: 图片文件的预览，与文件预览不同的是它有图片的不同操作,可以多个图片切换着查看。可以加水印，水印目前不支持传参。需要各个项目单独定制水印策略.
+  tags:
+    - 01factory
+  parameters:
+    - name: ids
+      description: 文件id使用分隔符`|`拼接成的文本,如`http(s)://website.com/file/preview/imgs/fileid1|fileid2|fileid3|...|fileidn`
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uri
+  responses:
+    200:
+      description: 打开图片的预览页面，需要使用单独的页签显示，不建议嵌入原页面作为轮播图使用

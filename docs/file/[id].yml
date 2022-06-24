@@ -1,0 +1,27 @@
+get:
+  summary: 文件下载
+  description: 下载文件或在页面中展示文件（一般为图片）
+  tags:
+    - 01factory
+  parameters:
+    - name: id
+      description: 文件id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: download
+      description: |
+        是否下载文件，如果传该参数，则强制下载，即使是图片也调用浏览器下载功能，而不是在浏览器直接展示.如果该参数有值，如`http(s)://website.com/file/fileid?download=foo.png`，则使用传递的文件名作为下载文件名.如只传参数名`http(s)://website.com/file/fileid?download`，则使用该文件的原始上传时的文件名作为下载文件名
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uri
+        examples:
+          - http(s)://website.com/file/fileid
+          - http(s)://website.com/file/fileid?download
+          - http(s)://website.com/file/fileid?download=foo.png
+  responses:
+    200:
+      description: file downloaded

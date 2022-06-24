@@ -1,0 +1,53 @@
+post:
+  summary: 编码
+  description: 编码服务
+  tags:
+    - 01factory
+  requestBody:
+    description: 编码规则
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: |
+                编码名称，一般为英文字母缩写。生成的编码将会以该英文字母为前缀。
+                **注**：如果要生成的编码不需要前缀，可以在拿到返回值后将前缀替换掉即可，不要使用空前缀，因为这样可能在多个编码时交叉搞混
+              example: PT
+            num:
+              type: number
+              format: int64
+              description: |
+                批量生成编码的个数
+              example: 123
+            len:
+              type: number
+              format: int32
+              description: |
+                编码的长度，应为大于0的数值
+              example: 8
+  responses:
+    200:
+      description: |
+        返回预定个数的编码数组
+      content:
+        application/json:
+          schema:
+            description: 编码数组
+            type: array
+            items:
+              type: string
+              description: 生成的编码值，规则为 `前缀`+`n位数字` 数字位数不够用`0`填充
+              example: PT00000001
+    500:
+      description: |
+        生成编码失败时返回结果，将会为一个空数组.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+              format: none
