@@ -6,6 +6,7 @@
 		"mm.mmstudio",
 		"divlo.vscode-styled-jsx-languageserver",
 		"blanu.vscode-styled-jsx",
-		"cipchk.cssrem"
+		"cipchk.cssrem",
+		"42Crunch.vscode-openapi"
 	]
 }
