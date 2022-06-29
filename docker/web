@@ -30,6 +30,7 @@ COPY --from=builder /app/package.json ./package.json
 ADD ./mm.json ./mm.json
 ADD ./log4js.json ./log4js.json
 ADD ./next.config.js ./next.config.js
+ADD ./docs ./docs
 
 # USER nextjs
 
