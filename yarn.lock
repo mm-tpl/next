@@ -477,10 +477,10 @@
   resolved "https://registry.npmjs.org/@mmstudio/an000059/-/an000059-1.0.1.tgz#0640f96ca896fafcf977960eabbd17183f93b1d4"
   integrity sha512-BXCCPVLA/BuWlr5ftUh5ifUDXu72EnD4G+NWSxB7XAKdb0x1kIDYspEJ1ea2lBXAR8v7mNk9M3NOst8gqf2sUA==
 
-"@mmstudio/an000060@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/@mmstudio/an000060/-/an000060-1.0.3.tgz#24cb649b930f64efb39052be4c841cb4e62eb5a5"
-  integrity sha512-zUnXYaJjWf4G5D1BrSmExUPAm0gtMz+BEbEwbpmyleCkBzOSuI8RzETsQ9lJrZR7SW2F2w/88pdLmwyNG8EJaw==
+"@mmstudio/an000060@^2.0.2":
+  version "2.0.2"
+  resolved "https://repo.huaweicloud.com/repository/npm/@mmstudio/an000060/-/an000060-2.0.2.tgz#987a46ba8dcc8118efe9b0e676bfc058dd7e0512"
+  integrity sha512-TIN7DsCA827jxJLnHWnxpxuFjeyx/IxYwdqQtMu2rrDa+WehwmtVV/ZaJPeKi8VqwQsapXdjOloDsW5AO+Sbwg==
   dependencies:
     "@mmstudio/an000049" "^2.3.1"
     "@mmstudio/an000059" "^1.0.1"
