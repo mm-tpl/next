@@ -23,6 +23,7 @@
 	},
 	"dependencies": {
 		"@arco-design/web-react": "^2.23.5",
+		"@mmstudio/an000039": "^1.1.1",
 		"@mmstudio/an000041": "^2.0.0",
 		"@mmstudio/an000042": "^1.0.0",
 		"@mmstudio/an000045": "^1.2.0",
