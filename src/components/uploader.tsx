@@ -17,6 +17,7 @@ export type UploadFile = FdFile & {
  * 文件上传
  */
 export default function Uploader({
+	disabled,
 	limit,
 	deleteFileOnServer = false,
 	multiple = false,
@@ -25,8 +26,31 @@ export default function Uploader({
 	onChange,
 	onAdd,
 	CustomUploadedFileList = UploadedFileList,
-	onCheck = () => true
+	onCheck = () => true,
+	children,
+	accept,
+	tip,
+	drag = false
 }: {
+	/**
+	 * 是否禁用
+	 */
+	disabled?: boolean;
+	/**
+	* @zh 是否拖拽上传
+	* @en Whether to enable drag and drop upload
+	*/
+	drag?: boolean
+	/**
+	 * @zh 提示文字，listType 不同，展示会有区别
+	 * @en The tip text
+	 */
+	tip?: string;
+	/**
+	 * @zh 接受上传的类型 [详细请参考](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept)
+	 * @en Accepted [file types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept)
+	 */
+	accept?: string;
 	/**
 	 * 允许上传多个文件时限制最多可上传文件数量
 	 */
@@ -70,6 +94,7 @@ export default function Uploader({
 		onRemove: (file: UploadFile) => void;
 	}>;
 	onCheck?(file: File, filesList: File[]): boolean | Promise<any>;
+	children?: ReactNode;
 }) {
 	const endpoint = api['/api/file/upload'];
 	const getfile = api['/api/file/id'];
@@ -103,12 +128,19 @@ export default function Uploader({
 	}, [files]);
 	return <>
 		<Upload
+			disabled={disabled}
+			drag={drag}
+			tip={tip}
 			limit={limit}
 			multiple={multiple}
 			fileList={filelist}
 			action={endpoint}
+			accept={accept}
 			listType='text'
 			onChange={(files, file) => {
+				const filesAllUploaded = files.every((file) => {
+					return file.status === 'done' || file.status === 'init';
+				});
 				if (file.status === 'done') {
 					if (onAdd) {
 						const res = file.response as Result;
@@ -117,7 +149,7 @@ export default function Uploader({
 							filename: res.filename
 						});
 					}
-					onChange && onChange(files.filter((file) => {
+					filesAllUploaded && onChange && onChange(files.filter((file) => {
 						return file.status === 'done';
 					}).map((file) => {
 						const res = file.response as Result;
@@ -131,7 +163,7 @@ export default function Uploader({
 			}}
 			beforeUpload={(file, files) => {
 				return onCheck(file, files);
-				// 全部图片类型
+				// 全部图片类型;
 				// if (/image/.test(file.type)) {
 				// 	return true;
 				// }
@@ -205,7 +237,7 @@ export default function Uploader({
 					<UnUploadedFileList files={notUploaded} props={props} />
 				</div>;
 			}}
-		/>
+		>{children}</Upload>
 	</>;
 }
 
@@ -293,10 +325,10 @@ function FileCard({
 	return <div>
 		<Progress
 			showText={false}
-			type="circle"
+			type="line"
 			status='normal'
 			percent={percent}
-			size="mini"
+			size="large"
 			{...progressProps}
 		/>
 		{status === 'init' && (
