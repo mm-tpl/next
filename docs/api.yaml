@@ -12,9 +12,9 @@ info:
     email: tao_qiufeng@126.com
 
 servers:
-  - url: /signup/api
+  - url: /01factory/api
     description: xxx系统
-  - url: http://127.0.0.1:3456/signup/api
+  - url: http://127.0.0.1:3456/01factory/api
     description: testxxx系统
 
 tags:
