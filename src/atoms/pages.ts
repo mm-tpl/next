@@ -8,7 +8,6 @@ export default {
 	'/405': '/405',
 	'/500': '/500',
 	'/[...url]': '/',
-	'/_app': '/_app',
-	'/_document': '/_document',
+	'/docs': '/docs',
 	'/imp': '/imp'
 };

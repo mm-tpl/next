@@ -1,13 +1,28 @@
 
+/**
+ * 环形（或一部分）图形
+ */
 export default function Ring({
 	size,
 	width,
 	color,
 	angle
 }: {
+	/**
+	 * 外环边框颜色
+	 */
 	color: string;
+	/**
+	 * 边框的宽度
+	 */
 	width: string;
+	/**
+	 * 环形直径
+	 */
 	size: string;
+	/**
+	 * 半环的起始角度
+	 */
 	angle: number;
 }) {
 	return <>

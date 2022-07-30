@@ -1,6 +1,6 @@
 /**
  * token key
  */
-export default function key() {
-	return 'gas';
+export default function tokenKey() {
+	return '01factory';
 }

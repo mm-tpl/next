@@ -1,6 +1,9 @@
 import NextLink from 'next/link';
 import { AnchorHTMLAttributes } from 'react';
 
+/**
+ * 超链接，全面替代`<a></a>`
+ */
 export default function Link({
 	href,
 	children,
