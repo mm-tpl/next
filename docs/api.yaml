@@ -15,7 +15,7 @@ servers:
   - url: /01factory/api
     description: xxx系统
   - url: http://127.0.0.1:3456/01factory/api
-    description: testxxx系统
+    description: xxx系统
 
 tags:
   - name: 01factory
