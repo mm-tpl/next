@@ -13,14 +13,8 @@ services:
       context: ..
       dockerfile: ./docker/postgres
 
-  # nginx:
-  #   image: 01factory.io/xxx/nginx:dev
-  #   build:
-  #     context: ..
-  #     dockerfile: ./docker/nginx
-
-  docs:
-    image: 01factory.io/xxx/docs:dev
+  nginx:
+    image: 01factory.io/xxx/xxxxxx/nginx:dev
     build:
       context: ..
-      dockerfile: ./docker/docs
+      dockerfile: ./docker/nginx
