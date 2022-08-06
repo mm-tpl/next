@@ -25,13 +25,11 @@
 	"typescript.preferences.importModuleSpecifier": "relative",
 	"editor.renderWhitespace": "all",
 	"editor.linkedEditing": true,
-	"vetur.format.defaultFormatter.ts": "none",
 	"breadcrumbs.enabled": true,
 	"files.associations": {
 		"*.json": "jsonc"
 	},
-	"yaml.schemas": {
-		"https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible.json#/definitions/playbook": "file:///home/taoqf/work/github/mm-tpl/next/deploy/build.yml",
-		"https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": "file:///home/taoqf/work/github/mm-tpl/next/docker/build.yml"
-	}
+	"terminal.integrated.shellIntegration.enabled": true,
+	"json.format.keepLines": true,
+	"auto-rename-tag.activationOnLanguage": [ "html", "xml", "php", "typescriptreact" ]
 }

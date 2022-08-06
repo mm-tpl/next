@@ -7,6 +7,7 @@
 		"divlo.vscode-styled-jsx-languageserver",
 		"blanu.vscode-styled-jsx",
 		"cipchk.cssrem",
-		"42Crunch.vscode-openapi"
+		"42Crunch.vscode-openapi",
+		"formulahendry.auto-rename-tag"
 	]
 }
